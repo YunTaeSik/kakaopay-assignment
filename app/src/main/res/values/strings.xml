@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YtsCleanArchitecture</string>
+    <string name="app_name">KaKaocommerceTestByYunTs</string>
 
     <string name="kakao_commerce" translatable="false">"KaKaocommerce"</string>
     <string name="search" translatable="false">"Search"</string>
