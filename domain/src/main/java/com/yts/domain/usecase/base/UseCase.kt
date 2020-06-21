@@ -14,7 +14,7 @@ abstract class UseCase<T> {
     /**
      * Unit type은 자바의 void와 같은 역할을 합니다.
      */
-    open fun execute(
+    open fun getData(
         onSuccess: ((t: T) -> Unit),
         onError: ((t: Throwable) -> Unit),
         onFinished: () -> Unit = {}
