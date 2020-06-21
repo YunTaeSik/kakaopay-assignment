@@ -1,4 +1,4 @@
-## Architecture
+## Architecture[![HitCount](http://hits.dwyl.com/YunTaeSik/image-search.svg)](http://hits.dwyl.com/YunTaeSik/image-search)
  <div>
   <img src="http://miro.medium.com/max/1258/1*a-AUcEVdyRJhIepo9JyJBw.png" hspace=8 width = 250>
  </div>
