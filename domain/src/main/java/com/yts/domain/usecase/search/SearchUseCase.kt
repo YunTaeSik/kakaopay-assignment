@@ -6,6 +6,9 @@ import com.yts.domain.usecase.base.UseCase
 import io.reactivex.Observable
 import javax.naming.directory.SearchControls
 
+/**
+ * Presenttation (ViewModel)과 Repository의 중재자 역할
+ */
 class SearchUseCase(private val searchRepository: SearchRepository) : UseCase<SearchResponse>() {
     fun getImages(
         query: String,
