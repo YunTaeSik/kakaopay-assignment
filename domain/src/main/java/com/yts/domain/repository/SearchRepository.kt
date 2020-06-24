@@ -3,6 +3,12 @@ package com.yts.domain.repository
 import com.yts.domain.response.SearchResponse
 import io.reactivex.Observable
 
+/**
+ * Data의 Repository의 인터페이스
+ * SearchRepository의 목록을 설계해놓는곳
+ *
+ * Data의 Repository의 실제 구현체 RepositoryImp를 가져오기 위하여 필요하다.
+ */
 
 public interface SearchRepository {
 

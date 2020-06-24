@@ -13,6 +13,7 @@ abstract class UseCase<T> {
 
     /**
      * Unit type은 자바의 void와 같은 역할을 합니다.
+     * 공통 인자
      */
     open fun getData(
         onSuccess: ((t: T) -> Unit),
