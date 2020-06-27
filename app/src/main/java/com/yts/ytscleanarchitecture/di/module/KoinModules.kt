@@ -11,6 +11,7 @@ import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.schedulers.Schedulers
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -18,17 +19,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * DI Koin 사용....
+ * 의존성 주입 라이브러리
+ * 재사용성을 높여줍니다.
+ * 테스트에 용이합니다.
+ * 코드를 단순화 시켜줍니다.
+ * 종속된 코드를 줄여줍니다.
+ * 결합도를 낮추면서 유연성과 확장성이 향상됩니다.
  *
+ * 런타임중 실행 (Dagger2는 컴파일에서 동작)
+ * single = 싱글톤 생성
+ * factory = inject 할때마다 인스턴스 생성
  */
 
 val repositoryModule = module {
+    koinApplication {  }
     single<SearchRepository> { SearchRepositoryImp(get()) }
     single<SearchUseCase> { SearchUseCase(get()) }
 }
 
 var adapterModule = module {
-    single<SearchAdapter> { SearchAdapter() }
-    single<FilterAdapter> { FilterAdapter() }
+    factory<SearchAdapter> { SearchAdapter() }
+    factory<FilterAdapter> { FilterAdapter() }
 }
 
 var netModule = module {
