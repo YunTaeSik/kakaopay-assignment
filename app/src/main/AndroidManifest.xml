@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.FullScreen"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true">  <!--모든 http 주소에 접근가능하도록 -->
+
         <activity android:name=".presentation.ui.intro.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".presentation.ui.search.SearchActivity" />
+
         <activity
             android:name=".presentation.ui.image.ImageDetailActivity"
             android:theme="@style/AppTheme.FullScreen" />

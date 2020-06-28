@@ -23,6 +23,7 @@ open class BaseViewModel : ViewModel() {
         compositeDisposable.clear()
     }
 
+    //해당 Activity onDestory 다음 호출
     override fun onCleared() {
         clear()
         super.onCleared()

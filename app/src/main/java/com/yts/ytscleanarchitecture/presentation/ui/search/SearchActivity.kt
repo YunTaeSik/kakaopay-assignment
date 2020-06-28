@@ -101,8 +101,8 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     private fun setFilterText(filter: String?) {
         filterTextVisibilityDisposable?.dispose()
         if (filter != null && filter.isNotEmpty()) {
-            text_filter.text = filter
-            text_filter.startCircularRevealAnimation()
+            model.addDisposable(text_filter.startCircularRevealAnimation(filter))
+            //  text_filter.text = filter
             if (filter == Const.FILTER_ALL) {
                 filterTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
