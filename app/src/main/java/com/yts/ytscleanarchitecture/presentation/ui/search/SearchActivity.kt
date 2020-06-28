@@ -50,20 +50,13 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-
-        ViewCompat.setTransitionName(
-            text_title,
-            Const.TRANS_VIEW_NAME_TITLE
-        )
         initView()
-
     }
 
     private fun initView() {
         btn_text_delete.setOnClickListener(this)
         model.setViewType(SearchViewType.NONE)
     }
-
 
     private fun changeFragment(fragment: Fragment) {
         val tag = fragment.javaClass.simpleName
@@ -78,6 +71,50 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
         }
     }
 
+    private fun setTitle(type: SearchViewType) {
+        if (type == SearchViewType.NONE) {
+            var spannableStringBuilder =
+                SpannableStringBuilder(getString(R.string.kakao_commerce))
+            spannableStringBuilder.setSpan(
+                StyleSpan(Typeface.BOLD),
+                5,
+                13,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            text_title.text = spannableStringBuilder
+        } else if (type == SearchViewType.RESULT) {
+
+            var spannableStringBuilder =
+                SpannableStringBuilder(getString(R.string.search))
+            spannableStringBuilder.setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                6,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            text_title.text = spannableStringBuilder
+        }
+    }
+
+    private fun setFilterText(filter: String?) {
+        filterTextVisibilityDisposable?.dispose()
+        if (filter != null && filter.isNotEmpty()) {
+            text_filter.text = filter
+            text_filter.startCircularRevealAnimation()
+            if (filter == Const.FILTER_ALL) {
+                filterTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(Consumer {
+                        text_filter.visibility = View.GONE
+                    })
+                model.addDisposable(filterTextVisibilityDisposable!!)
+            }
+        } else {
+            text_filter.visibility = View.GONE
+        }
+    }
 
     override fun observer() {
         model.isLoading.observe(this, Observer {
@@ -89,33 +126,10 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
         })
 
         model.viewType.observe(this, Observer { type ->
+            setTitle(type)
             if (type == SearchViewType.NONE) {
-                var spannableStringBuilder =
-                    SpannableStringBuilder(getString(R.string.kakao_commerce))
-                spannableStringBuilder.setSpan(
-                    StyleSpan(Typeface.BOLD),
-                    5,
-                    13,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-
-                text_title.text = spannableStringBuilder
-
                 changeFragment(SearchFragment.newInstance())
             } else if (type == SearchViewType.RESULT) {
-
-                var spannableStringBuilder =
-                    SpannableStringBuilder(getString(R.string.search))
-                spannableStringBuilder.setSpan(
-                    StyleSpan(Typeface.BOLD),
-                    0,
-                    6,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-
-                text_title.text = spannableStringBuilder
-
-
                 changeFragment(SearchResultFragment.newInstance())
             }
         })
@@ -129,28 +143,12 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
         })
 
         model.filter.observe(this, Observer { filter ->
-            filterTextVisibilityDisposable?.dispose()
-
-            if (filter != null && filter.isNotEmpty()) {
-                text_filter.text = filter
-                text_filter.startCircularRevealAnimation()
-                if (filter == Const.FILTER_ALL) {
-                    filterTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(Consumer {
-                            text_filter.visibility = View.GONE
-                        })
-                    model.addDisposable(filterTextVisibilityDisposable!!)
-                }
-            } else {
-                text_filter.visibility = View.GONE
-            }
+            setFilterText(filter)
         })
 
         edit_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 model.changeQueryText(s.toString())
-
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.ItemFilterBinding
-import com.yts.ytscleanarchitecture.presentation.ui.search.FilterItemClickListener
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
 
 class FilterAdapter : ListAdapter<String, FilterAdapter.FilterViewHolder>(CommonDiffUtil()) {

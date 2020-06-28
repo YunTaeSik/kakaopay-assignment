@@ -12,8 +12,9 @@ import retrofit2.create
  * DataSource때문에 안드로이드 의존성이 생긴다.
  *
  * 도메인과 데이터레이어를 중재시켜주는 역할
+ *
  * RX Android 효율적이고 신속하게 비동기 처리를 도와줌
- * 옴저버패턴을 사용하고
+ * 옴저버패턴(데이터 변경이 일어날 경우 객체에 의존하지 않고 데이터 변경을 통보함)을 사용하고
  * 콜백의 지옥에서 벗어날수있다!
  */
 class SearchRepositoryImp(private val retrofit: Retrofit) : SearchRepository {

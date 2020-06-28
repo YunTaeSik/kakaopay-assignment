@@ -11,7 +11,6 @@ import io.reactivex.Observable
  */
 
 public interface SearchRepository {
-
     /**
      * query = 	검색을 원하는 질의어
      * sort = 	결과 문서 정렬 방식	accuracy (정확도순) or recency (최신순)
