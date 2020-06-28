@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.text.style.StyleSpan
 import android.util.SparseArray
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -35,7 +34,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     private val model: SearchViewModel by viewModel()
 
     private var currentFragmentTag: String? = null
-    private var filterTextVisibilityDisposable: Disposable? = null
+    private var filterIsAllTextVisibilityDisposable: Disposable? = null
 
     override fun onLayoutId(): Int {
         return R.layout.activity_search
@@ -73,7 +72,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
 
     private fun setTitle(type: SearchViewType) {
         if (type == SearchViewType.NONE) {
-            var spannableStringBuilder =
+            var spannableStringBuilder = //빌더와 버퍼 빌더는 동기화나 멀티쓰레드환경이 아닐때 유리
                 SpannableStringBuilder(getString(R.string.kakao_commerce))
             spannableStringBuilder.setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -99,17 +98,16 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     }
 
     private fun setFilterText(filter: String?) {
-        filterTextVisibilityDisposable?.dispose()
+        filterIsAllTextVisibilityDisposable?.dispose()
         if (filter != null && filter.isNotEmpty()) {
             model.addDisposable(text_filter.startCircularRevealAnimation(filter))
-            //  text_filter.text = filter
             if (filter == Const.FILTER_ALL) {
-                filterTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
+                filterIsAllTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(Consumer {
                         text_filter.visibility = View.GONE
                     })
-                model.addDisposable(filterTextVisibilityDisposable!!)
+                model.addDisposable(filterIsAllTextVisibilityDisposable!!)
             }
         } else {
             text_filter.visibility = View.GONE

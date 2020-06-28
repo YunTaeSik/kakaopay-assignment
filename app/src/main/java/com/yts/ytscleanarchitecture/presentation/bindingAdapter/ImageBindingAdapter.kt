@@ -11,12 +11,13 @@ object ImageBindingAdapter {
     @BindingAdapter("srcCompat")
     fun srcCompat(view: ImageView, url: String?) {
         if (url != null) {
-      //      val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
+            // val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
 
             Glide.with(view.context)
                 .load(url)
                 .error(R.drawable.img_error)
-               // .transition(withCrossFade(factory))
+                .thumbnail(0.3f)
+                // .transition(withCrossFade(factory))
                 .into(view)
 
         }
