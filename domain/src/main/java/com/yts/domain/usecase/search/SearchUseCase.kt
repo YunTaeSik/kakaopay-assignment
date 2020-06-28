@@ -17,14 +17,13 @@ import javax.naming.directory.SearchControls
  * ..이런경우(파람이 여려개인)는 Set으로 파라미터를 설정하고 build하는게 맞는걸까?
  */
 class SearchUseCase(private val searchRepository: SearchRepository) : UseCase<SearchResponse>() {
+    private val imageSize = 78
 
     fun getImages(
         query: String,
-        sort: String?,
-        page: Int?,
-        size: Int?
+        page: Int?
     ): Observable<SearchResponse> {
-        return searchRepository.getImages(query, sort, page, size)
+        return searchRepository.getImages(query, null, page, imageSize)
     }
 
     override fun buildUseCase(): Observable<SearchResponse> {

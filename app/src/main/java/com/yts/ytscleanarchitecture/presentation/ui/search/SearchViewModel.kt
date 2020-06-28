@@ -1,6 +1,5 @@
 package com.yts.ytscleanarchitecture.presentation.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.yts.domain.entity.Document
@@ -46,7 +45,7 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
 
     val filterHashSet: LiveData<HashSet<String>> get() = _filterHashSet
 
-    private var isEnd = false
+    private var isEndDocumentList = false
 
     //SearchActivity Fragmetn viewtype 설정
     fun setViewType(viewType: SearchViewType) {
@@ -99,7 +98,7 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
     }
 
     private fun clearFilterHashSet() {
-        var filterHashSet: HashSet<String> = HashSet()
+        val filterHashSet: HashSet<String> = HashSet()
         filterHashSet.add(Const.FILTER_ALL)
         _filterHashSet.postValue(filterHashSet)
     }
@@ -167,8 +166,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
      * Load More
      */
     fun loadMore(findLastCompletelyVisibleItemPosition: Int): Boolean {
-        if (findLastCompletelyVisibleItemPosition == documentFilterList.value!!.size - 1) {
-            if (!_isLoading.value!! && !isEnd) {
+        val isLastVisibleItem =
+            findLastCompletelyVisibleItemPosition == documentFilterList.value!!.size - 1
+        if (isLastVisibleItem) {
+            if (!_isLoading.value!! && !isEndDocumentList) {
                 getImages(page.value!! + 1)
                 return true
             }
@@ -185,18 +186,15 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
             addDisposable(
                 searchUseCase.getImages(
                     query.value!!,
-                    null,
-                    page,
-                    78
+                    page
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
                     .subscribe({
-
-                        if (it.documents?.size == 0) {
+                        if (emptyDocumentList(it)) {
                             _toastMessageId.postValue(R.string.error_query_size_null_message)
                         } else if (it.meta?.total_count != _documentList.value?.size) {
-                            isEnd = it.meta?.is_end!!
+                            isEndDocumentList = it.meta?.is_end!!
                             setDocumentList(it)
                         }
                         setPage(page)
@@ -209,6 +207,11 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
             )
         }
     }
+
+    private fun emptyDocumentList(searchResponse: SearchResponse): Boolean {
+        return searchResponse.documents?.size == 0
+    }
+
 
     /**
      * 필터 리스트 셋
