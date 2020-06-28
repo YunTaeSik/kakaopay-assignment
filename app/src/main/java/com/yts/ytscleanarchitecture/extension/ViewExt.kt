@@ -21,18 +21,18 @@ fun TextView.startCircularRevealAnimation() {
     this.post(Runnable {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-                var width = this.textSize * this.text.length
-                var height = this.textSize
+                val width = this.textSize * this.text.length
+                val height = this.textSize
 
-                var startRadius = 0.0f
-                var endRadius = hypot(width.toDouble(), height.toDouble())
+                val startRadius = 0.0f
+                val endRadius = hypot(width.toDouble(), height.toDouble())
 
                 Log.e("width", width.toString())
                 Log.e("height", height.toString())
                 Log.e("startRadius", startRadius.toString())
                 Log.e("endRadius", endRadius.toString())
 
-                var animator = ViewAnimationUtils.createCircularReveal(
+                val animator = ViewAnimationUtils.createCircularReveal(
                     this,
                     this.left,
                     this.top,
@@ -52,7 +52,7 @@ fun TextView.startCircularRevealAnimation() {
 
 
 fun ProgressBar.showLoading(value: Boolean) {
-    var visible = if (value) {
+    val visible = if (value) {
         View.VISIBLE
     } else {
         View.GONE

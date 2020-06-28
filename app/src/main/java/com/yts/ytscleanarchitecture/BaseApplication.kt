@@ -12,7 +12,6 @@ class BaseApplication : Application() {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
-
     override fun onCreate() {
         super.onCreate()
 
@@ -20,8 +19,5 @@ class BaseApplication : Application() {
             androidContext(this@BaseApplication)
             modules(moduleList)
         }
-
     }
-
-
 }

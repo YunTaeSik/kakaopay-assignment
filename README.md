@@ -1,3 +1,21 @@
+## 업무내용
+ - 코틀린 기반의 카카오스타일 네이티브 안드로이드 앱 개발
+ - 코틀린 + 웹앱기반의 카카오메이커스 안드로이드 앱 개발
+ - 카카오톡 웹뷰 기반의 메이커스 웹뷰 개발  
+  
+## 지원자격
+  - Android 개발 경력 2년 이상인 분
+  - Kotlin과 Java에 대한 이해도가 있으신 분
+  - 서비스 개선에 대한 열의와 적극적 태도가 있으신 분
+  - 새로운 도전을 즐기시는 분
+  
+## 우대사항 
+  - Kotlin으로 실 서비스 개발해보신 분
+  - 디자인 패턴의 이해도가 높으신 분
+  - 최신 라이브러리의 사용 경험
+  
+    
+
 ## Architecture [![HitCount](http://hits.dwyl.com/YunTaeSik/image-search.svg)](http://hits.dwyl.com/YunTaeSik/image-search)
  <div>
   <img src="http://miro.medium.com/max/1258/1*a-AUcEVdyRJhIepo9JyJBw.png" hspace=8 width = 250>

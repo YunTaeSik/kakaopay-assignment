@@ -12,11 +12,13 @@ import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.FragmentSearchResultBinding
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
 import com.yts.ytscleanarchitecture.presentation.ui.filter.FilterAdapter
+import com.yts.ytscleanarchitecture.presentation.ui.filter.FilterItemClickListener
 import kotlinx.android.synthetic.main.fragment_search_result.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(), FilterItemClickListener {
+class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
+    FilterItemClickListener {
     private val searchAdapter: SearchAdapter by inject()
     private val filterAdapter: FilterAdapter by inject()
 
