@@ -38,10 +38,7 @@ class IntroActivity : BaseActivity<IntroBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*  model.addDisposable(Single.timer(250, TimeUnit.MILLISECONDS).subscribe { _ ->
-              text_title.startCircularRevealAnimation()
-          })  */
-        model.addDisposable(text_title.startCircularRevealAnimation(null))
+        model.addDisposable(text_title.startCircularRevealAnimation())
 
         model.addDisposable(Single.timer(1500, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())

@@ -20,6 +20,7 @@ import com.yts.ytscleanarchitecture.extension.showLoading
 import com.yts.ytscleanarchitecture.extension.startCircularRevealAnimation
 import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BackDoubleClickFinishActivity
+import com.yts.ytscleanarchitecture.presentation.base.BaseActivity
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -31,6 +32,8 @@ import java.util.concurrent.TimeUnit
 
 class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     View.OnClickListener {
+    private val filterIsAllTextVisibilityTime = 1000L
+
     private val model: SearchViewModel by viewModel()
 
     private var currentFragmentTag: String? = null
@@ -72,7 +75,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
 
     private fun setTitle(type: SearchViewType) {
         if (type == SearchViewType.NONE) {
-            var spannableStringBuilder = //빌더와 버퍼 빌더는 동기화나 멀티쓰레드환경이 아닐때 유리
+            val spannableStringBuilder = //빌더와 버퍼 빌더는 동기화나 멀티쓰레드환경이 아닐때 유리
                 SpannableStringBuilder(getString(R.string.kakao_commerce))
             spannableStringBuilder.setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -84,7 +87,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
             text_title.text = spannableStringBuilder
         } else if (type == SearchViewType.RESULT) {
 
-            var spannableStringBuilder =
+            val spannableStringBuilder =
                 SpannableStringBuilder(getString(R.string.search))
             spannableStringBuilder.setSpan(
                 StyleSpan(Typeface.BOLD),
@@ -102,7 +105,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
         if (filter != null && filter.isNotEmpty()) {
             model.addDisposable(text_filter.startCircularRevealAnimation(filter))
             if (filter == Const.FILTER_ALL) {
-                filterIsAllTextVisibilityDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
+                filterIsAllTextVisibilityDisposable = Observable.timer(filterIsAllTextVisibilityTime, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(Consumer {
                         text_filter.visibility = View.GONE
@@ -112,6 +115,10 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
         } else {
             text_filter.visibility = View.GONE
         }
+    }
+
+    private fun clearSearchText() {
+        edit_search.setText("")
     }
 
     override fun observer() {
@@ -156,13 +163,12 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
             }
         })
 
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btn_text_delete -> {
-                edit_search.setText("")
+                clearSearchText()
             }
         }
     }

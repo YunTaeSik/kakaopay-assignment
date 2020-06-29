@@ -11,6 +11,7 @@ import androidx.core.util.Pair
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.yts.domain.entity.Document
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.SearchItemBinding
@@ -18,9 +19,8 @@ import com.yts.ytscleanarchitecture.presentation.ui.image.ImageDetailActivity
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
 import com.yts.ytscleanarchitecture.utils.Const
 
-class SearchAdapter : ListAdapter<Document, SearchAdapter.SearchViewHolder>(
-    CommonDiffUtil<Document>()
-) {
+class SearchAdapter(private val gson: Gson) :
+    ListAdapter<Document, SearchAdapter.SearchViewHolder>(CommonDiffUtil<Document>(gson)) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val item: SearchItemBinding = DataBindingUtil.inflate(
@@ -45,16 +45,15 @@ class SearchAdapter : ListAdapter<Document, SearchAdapter.SearchViewHolder>(
         override fun onClick(v: View?) {
             val context: Context = binding.image.context
 
-            var pair: Pair<View, String> = Pair.create(binding.image, Const.TRANS_VIEW_IMAGE)
+            val pair: Pair<View, String> = Pair.create(binding.image, Const.TRANS_VIEW_IMAGE)
             val optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                     context as Activity,
                     pair
                 )
-            binding.data
-            var imageDetail :Intent= Intent(context, ImageDetailActivity::class.java)
-            imageDetail.putExtra(Const.INTENT_IMAGE_URL, getItem(adapterPosition)?.image_url)
-
+            val imageDetail = Intent(context, ImageDetailActivity::class.java).apply {
+                putExtra(Const.INTENT_IMAGE_URL, getItem(adapterPosition)?.image_url)
+            }
             context.startActivity(
                 imageDetail, optionsCompat.toBundle()
             )
