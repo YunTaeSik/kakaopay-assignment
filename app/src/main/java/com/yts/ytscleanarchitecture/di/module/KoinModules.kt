@@ -1,5 +1,6 @@
 package com.yts.ytscleanarchitecture.di.module
 
+import com.google.gson.Gson
 import com.yts.data.repository.SearchRepositoryImp
 import com.yts.domain.repository.SearchRepository
 import com.yts.domain.usecase.search.SearchUseCase
@@ -32,14 +33,13 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 val repositoryModule = module {
-    koinApplication {  }
     single<SearchRepository> { SearchRepositoryImp(get()) }
     single<SearchUseCase> { SearchUseCase(get()) }
 }
 
 var adapterModule = module {
-    factory<SearchAdapter> { SearchAdapter() }
-    factory<FilterAdapter> { FilterAdapter() }
+    factory<SearchAdapter> { SearchAdapter(get()) }
+    factory<FilterAdapter> { FilterAdapter(get()) }
 }
 
 var netModule = module {
@@ -64,6 +64,10 @@ var viewModelModule = module {
     }
 }
 
+var extModule = module {
+    single { Gson() }
+}
+
 var moduleList = listOf(
-    repositoryModule, adapterModule, netModule, viewModelModule
+    repositoryModule, adapterModule, netModule, viewModelModule, extModule
 )

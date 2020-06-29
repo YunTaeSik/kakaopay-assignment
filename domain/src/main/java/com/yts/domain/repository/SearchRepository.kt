@@ -18,9 +18,4 @@ public interface SearchRepository {
      * size = 한 페이지에 보여질 문서의 개수	(기본 80)	1-80 사이 Integer
      */
     fun getImages(query: String, sort: String?, page: Int?, size: Int?): Observable<SearchResponse>
-
-
-    /**
-     *
-     */
 }

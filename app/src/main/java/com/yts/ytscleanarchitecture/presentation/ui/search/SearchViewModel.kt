@@ -20,8 +20,10 @@ import kotlin.collections.HashSet
 
 
 class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel() {
-    private var searchDisposable: Disposable? = null
+    private val waitTimeForSearch = 500L
+    private val firstPage = 1
 
+    private var searchDisposable: Disposable? = null
 
     private var _query = MutableLiveData<String>()
     private var _page = MutableLiveData<Int>()
@@ -47,12 +49,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
 
     private var isEndDocumentList = false
 
-    //SearchActivity Fragmetn viewtype 설정
     fun setViewType(viewType: SearchViewType) {
         _viewType.postValue(viewType)
     }
 
-    //검색어
     fun setQuery(query: String) {
         _query.value = query
 
@@ -63,7 +63,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         }
     }
 
-    //검색어가 변경됐을때
     fun changeQueryText(query: String) {
         clearFilter()
         clearFilterHashSet()
@@ -72,12 +71,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         search(query)
     }
 
-    //페이지
     fun setPage(page: Int) {
         _page.postValue(page)
     }
 
-    //필터 설정
     fun setFilter(filter: String) {
         _isLoading.postValue(true)
         _filter.postValue(filter)
@@ -103,14 +100,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         _filterHashSet.postValue(filterHashSet)
     }
 
-    //이미지 검색 리스트
     private fun setDocumentList(searchResponse: SearchResponse) {
         _documentList.addAll(searchResponse.documents!!)
     }
 
-    /**
-     * 이미지 리스트 초기화
-     */
     private fun clearDocumentList() {
         _documentList.clear()
         _documentFilterList.clear()
@@ -125,13 +118,12 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         setDocumentFilterList(filter.value, documentList)
     }
 
-    //이미지 검색에서 필터 리스트
     private fun setDocumentFilterList(filter: String?, documentList: List<Document>?) {
         if (filter == null || filter == Const.FILTER_ALL) {
             _documentFilterList.postValue(documentList)
         } else {
-            if (documentList != null) {
-                var filterList: ArrayList<Document> = ArrayList<Document>()
+            documentList?.let {
+                val filterList: ArrayList<Document> = ArrayList()
                 for (document in documentList) {
                     if (filter == document.collection?.toUpperCase()) {
                         filterList.add(document)
@@ -142,10 +134,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         }
     }
 
+    private fun emptyDocumentList(searchResponse: SearchResponse): Boolean {
+        return searchResponse.documents?.size == 0
+    }
 
-    /**
-     * 검색
-     */
     fun search(query: String) {
         _isLoading.postValue(false)
         setQuery(query)
@@ -153,18 +145,15 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         searchDisposable?.dispose()
         _isLoading.postValue(true)
         searchDisposable =
-            Observable.timer(500, TimeUnit.MILLISECONDS)
+            Observable.timer(waitTimeForSearch, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _isLoading.postValue(false)
-                    getImages(1)
+                    getImages(firstPage)
                 }, {
                     it.printStackTrace()
                 })
     }
 
-    /**
-     * Load More
-     */
     fun loadMore(findLastCompletelyVisibleItemPosition: Int): Boolean {
         val isLastVisibleItem =
             findLastCompletelyVisibleItemPosition == documentFilterList.value!!.size - 1
@@ -177,9 +166,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         return false
     }
 
-    /**
-     * 이미지목록 가져오기
-     */
     private fun getImages(page: Int) {
         if (query.value != null && query.value!!.isNotEmpty()) {
             _isLoading.postValue(true)
@@ -208,17 +194,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         }
     }
 
-    private fun emptyDocumentList(searchResponse: SearchResponse): Boolean {
-        return searchResponse.documents?.size == 0
-    }
 
-
-    /**
-     * 필터 리스트 셋
-     */
     fun setFilterHashSet(documents: List<Document>?) {
         if (documents != null) {
-            var filterHashSet: HashSet<String> = HashSet()
+            val filterHashSet: HashSet<String> = HashSet()
             filterHashSet.add(Const.FILTER_ALL)
             for (document in documents) {
                 if (document.collection != null) {

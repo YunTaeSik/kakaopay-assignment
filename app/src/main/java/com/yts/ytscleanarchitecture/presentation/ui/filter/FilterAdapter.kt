@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.ItemFilterBinding
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
 
-class FilterAdapter : ListAdapter<String, FilterAdapter.FilterViewHolder>(CommonDiffUtil()) {
+class FilterAdapter(private val gson: Gson) :
+    ListAdapter<String, FilterAdapter.FilterViewHolder>(CommonDiffUtil(gson)) {
 
     private var filterItemClickListener: FilterItemClickListener? = null
 

@@ -27,33 +27,9 @@ fun View.visible(value: Boolean) {
     }
 }
 
-/*fun TextView.startCircularRevealAnimation() {
-    this.post(Runnable {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            try {
-                val width = this.textSize * this.text.length
-                val height = this.textSize
-
-                val startRadius = 0.0f
-                val endRadius = hypot(width.toDouble(), height.toDouble())
-
-                val animator = ViewAnimationUtils.createCircularReveal(
-                    this,
-                    this.left,
-                    this.top,
-                    startRadius,
-                    endRadius.toFloat()
-                )
-                animator.interpolator = FastOutSlowInInterpolator()
-                animator.duration = 750
-                this.visibility = View.VISIBLE
-                animator.start()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    })
-}*/
+fun TextView.startCircularRevealAnimation(): Disposable {
+    return startCircularRevealAnimation(null)
+}
 
 fun TextView.startCircularRevealAnimation(text: String?): Disposable {
     this.visibility = View.GONE

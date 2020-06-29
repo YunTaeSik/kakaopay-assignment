@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit
 
 
 class IntroActivity : BaseActivity<IntroBinding>() {
+    private val startSearchActivityTime = 1500L
 
     private val model: IntroViewModel by viewModel()
 
@@ -38,12 +39,9 @@ class IntroActivity : BaseActivity<IntroBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*  model.addDisposable(Single.timer(250, TimeUnit.MILLISECONDS).subscribe { _ ->
-              text_title.startCircularRevealAnimation()
-          })  */
-        model.addDisposable(text_title.startCircularRevealAnimation(null))
+        model.addDisposable(text_title.startCircularRevealAnimation())
 
-        model.addDisposable(Single.timer(1500, TimeUnit.MILLISECONDS)
+        model.addDisposable(Single.timer(startSearchActivityTime, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { _ ->
                 startActivity(

@@ -16,7 +16,7 @@ import javax.naming.directory.SearchControls
  * ...UseCase는 한개의 단위로 통일하여 명확하게 나타내야하는데
  * ..이런경우(파람이 여려개인)는 Set으로 파라미터를 설정하고 build하는게 맞는걸까?
  */
-class SearchUseCase(private val searchRepository: SearchRepository) : UseCase<SearchResponse>() {
+class SearchUseCase(private val searchRepository: SearchRepository)  {
     private val imageSize = 78
 
     fun getImages(
@@ -24,10 +24,6 @@ class SearchUseCase(private val searchRepository: SearchRepository) : UseCase<Se
         page: Int?
     ): Observable<SearchResponse> {
         return searchRepository.getImages(query, null, page, imageSize)
-    }
-
-    override fun buildUseCase(): Observable<SearchResponse> {
-        return searchRepository.getImages("", null, null, null)
     }
 
 }

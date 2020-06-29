@@ -17,25 +17,3 @@ fun Context.makeToast(id: Int) {
         e.printStackTrace()
     }
 }
-
-fun Context.makeToast(text: String) {
-    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-}
-
-fun Context.log(text: String) {
-    Log.e(this.javaClass.simpleName, text)
-}
-
-fun Context.createDialog(
-    title: String,
-    message: String,
-    positiveText: String,
-    positiveClickListener: DialogInterface.OnClickListener
-) {
-    var dialog: AlertDialog.Builder = AlertDialog.Builder(this)
-    dialog.setTitle(title)
-    dialog.setMessage(message)
-    dialog.setPositiveButton(positiveText, positiveClickListener)
-    dialog.setNegativeButton(R.string.cancel, { dialogInterface, _ -> dialogInterface.dismiss() })
-    dialog.show()
-}
