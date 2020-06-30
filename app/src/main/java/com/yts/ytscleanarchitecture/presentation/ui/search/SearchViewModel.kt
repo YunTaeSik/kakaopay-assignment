@@ -76,6 +76,10 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         _documentList.addAll(searchResponse.documents!!)
     }
 
+    private fun emptyDocumentList(searchResponse: SearchResponse): Boolean {
+        return searchResponse.documents?.size == 0
+    }
+
     private fun clearDocumentList() {
         _documentList.clear()
         _documentFilterList.clear()
@@ -100,10 +104,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
                 _documentFilterList.postValue(filterList)
             }
         }
-    }
-
-    private fun emptyDocumentList(searchResponse: SearchResponse): Boolean {
-        return searchResponse.documents?.size == 0
     }
 
     private fun search(query: String) {
@@ -172,11 +172,16 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         clearFilter()
         clearFilterHashSet()
         clearDocumentList()
-        setPage(1)
+        setPage(firstPage)
         search(query)
     }
 
-    fun setFilter(filter: String) {
+    fun changeDocumentList(documentList: List<Document>?) {
+        setDocumentFilterList(filter.value, documentList)
+        setFilterHashSet(documentList)
+    }
+
+    fun clickFilterItem(filter: String) {
         _isLoading.postValue(true)
         _filter.postValue(filter)
         addDisposable(
@@ -189,11 +194,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
                     _isLoading.postValue(false)
                 })
         )
-    }
-
-    fun changeDocumentList(documentList: List<Document>?) {
-        setDocumentFilterList(filter.value, documentList)
-        setFilterHashSet(documentList)
     }
 
     fun loadMore(findLastCompletelyVisibleItemPosition: Int): Boolean {

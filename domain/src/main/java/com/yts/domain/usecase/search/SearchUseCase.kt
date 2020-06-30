@@ -20,7 +20,7 @@ class SearchUseCase(private val searchRepository: SearchRepository)  {
     private val imageSize = 78
 
 
-    
+
     fun getImages(
         query: String,
         page: Int?

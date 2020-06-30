@@ -24,6 +24,9 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 
     private val model: SearchViewModel by sharedViewModel()
 
+    private val firstPosition = 0
+    private val searchAdapterSpanCount = 3
+
     companion object {
         fun newInstance(): SearchResultFragment {
             val args = Bundle()
@@ -56,7 +59,6 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         super.onDestroyView()
     }
 
-    //필터 리스트 설정
     private fun settingFilterList() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         list_filter.layoutManager = layoutManager
@@ -64,9 +66,8 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         list_filter.adapter = filterAdapter
     }
 
-    //검색 리스트 설정
     private fun settingSearchList() {
-        val layoutManager = GridLayoutManager(context, 3)
+        val layoutManager = GridLayoutManager(context, searchAdapterSpanCount)
         list_search.layoutManager = layoutManager
         list_search.adapter = searchAdapter
 
@@ -84,7 +85,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 
     override fun observer() {
         model.filter.observe(this, Observer {
-            list_search.smoothScrollToPosition(0)
+            list_search.smoothScrollToPosition(firstPosition)
         })
 
         model.filterHashSet.observe(this, Observer { filterHashSet ->
@@ -98,7 +99,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
 
     //필터 아이템 클릭 이벤트 리스너
     override fun onFilterItemClick(filter: String) {
-        model.setFilter(filter)
+        model.clickFilterItem(filter)
     }
 
 }

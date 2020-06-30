@@ -22,10 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  * DI Koin 사용....
  * 의존성 주입 라이브러리
  * 재사용성 증가 테스트 가능한 코드 보일러플레이트코드 제거
- *
- * 런타임중 실행 (Dagger2는 컴파일에서 동작)
- * single = 싱글톤 생성
- * factory = inject 할때마다 인스턴스 생성
  */
 
 val repositoryModule = module {
