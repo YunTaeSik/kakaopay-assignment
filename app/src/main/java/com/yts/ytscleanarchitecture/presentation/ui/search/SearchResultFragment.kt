@@ -88,8 +88,7 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         })
 
         model.filterHashSet.observe(this, Observer { filterHashSet ->
-            val filterList: List<String> = ArrayList<String>(filterHashSet)
-            filterAdapter.submitList(filterList)
+            filterAdapter.submitList(ArrayList<String>(filterHashSet))
         })
 
         model.documentFilterList.observe(this, Observer {

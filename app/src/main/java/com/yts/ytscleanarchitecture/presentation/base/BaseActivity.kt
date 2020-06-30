@@ -9,7 +9,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.yts.ytscleanarchitecture.extension.hideKeyboard
 
-//binding 을 외부에서 설정함
+// binding 을 외부에서 설정함
+// extends = out 서브
+// super = in  슈퍼
 abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
     private var mLastClickTime: Long = 0
 

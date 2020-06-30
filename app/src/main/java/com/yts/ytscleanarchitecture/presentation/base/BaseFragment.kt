@@ -15,20 +15,10 @@ import com.yts.ytscleanarchitecture.R
 abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     protected var binding: B? = null
 
-    /**
-     * 레이아웃 설정
-     */
     protected abstract fun onLayoutId(): Int
-
-    /**
-     * 뷰모델 셋팅
-     */
     protected abstract fun setupViewModel(): SparseArray<ViewModel>
-
-    /**
-     * 옵저버
-     */
     protected abstract fun observer()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = transition

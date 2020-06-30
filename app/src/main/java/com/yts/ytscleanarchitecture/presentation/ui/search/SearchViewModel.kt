@@ -22,8 +22,9 @@ import kotlin.collections.HashSet
 class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel() {
     private val waitTimeForSearch = 500L
     private val firstPage = 1
+    private var isEndDocumentList = false
 
-    private var searchDisposable: Disposable? = null
+    private var waitTimeForSearchDisposable: Disposable? = null
 
     private var _query = MutableLiveData<String>()
     private var _page = MutableLiveData<Int>()
@@ -47,48 +48,19 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
 
     val filterHashSet: LiveData<HashSet<String>> get() = _filterHashSet
 
-    private var isEndDocumentList = false
-
-    fun setViewType(viewType: SearchViewType) {
-        _viewType.postValue(viewType)
-    }
-
-    fun setQuery(query: String) {
+    private fun setQuery(query: String) {
         _query.value = query
-
         if (query.isNotEmpty()) {
-            setViewType(SearchViewType.RESULT)
+            changeViewType(SearchViewType.RESULT)
         } else {
-            setViewType(SearchViewType.NONE)
+            changeViewType(SearchViewType.NONE)
         }
     }
 
-    fun changeQueryText(query: String) {
-        clearFilter()
-        clearFilterHashSet()
-        clearDocumentList()
-        setPage(1)
-        search(query)
-    }
-
-    fun setPage(page: Int) {
+    private fun setPage(page: Int) {
         _page.postValue(page)
     }
 
-    fun setFilter(filter: String) {
-        _isLoading.postValue(true)
-        _filter.postValue(filter)
-        addDisposable(
-            Observable.just(filter).observeOn(Schedulers.io())
-                .subscribe({
-                    _isLoading.postValue(false)
-                    setDocumentFilterList(it)
-                }, {
-                    _toastMessageId.postValue(R.string.error_message)
-                    _isLoading.postValue(false)
-                })
-        )
-    }
 
     private fun clearFilter() {
         _filter.postValue(null)
@@ -114,10 +86,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         setDocumentFilterList(filter, documentList.value)
     }
 
-    fun setDocumentFilterList(documentList: List<Document>?) {
-        setDocumentFilterList(filter.value, documentList)
-    }
-
     private fun setDocumentFilterList(filter: String?, documentList: List<Document>?) {
         if (filter == null || filter == Const.FILTER_ALL) {
             _documentFilterList.postValue(documentList)
@@ -138,13 +106,13 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         return searchResponse.documents?.size == 0
     }
 
-    fun search(query: String) {
+    private fun search(query: String) {
         _isLoading.postValue(false)
         setQuery(query)
 
-        searchDisposable?.dispose()
+        waitTimeForSearchDisposable?.dispose()
         _isLoading.postValue(true)
-        searchDisposable =
+        waitTimeForSearchDisposable =
             Observable.timer(waitTimeForSearch, TimeUnit.MILLISECONDS)
                 .subscribe({
                     _isLoading.postValue(false)
@@ -154,17 +122,6 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
                 })
     }
 
-    fun loadMore(findLastCompletelyVisibleItemPosition: Int): Boolean {
-        val isLastVisibleItem =
-            findLastCompletelyVisibleItemPosition == documentFilterList.value!!.size - 1
-        if (isLastVisibleItem) {
-            if (!_isLoading.value!! && !isEndDocumentList) {
-                getImages(page.value!! + 1)
-                return true
-            }
-        }
-        return false
-    }
 
     private fun getImages(page: Int) {
         if (query.value != null && query.value!!.isNotEmpty()) {
@@ -194,8 +151,7 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
         }
     }
 
-
-    fun setFilterHashSet(documents: List<Document>?) {
+    private fun setFilterHashSet(documents: List<Document>?) {
         if (documents != null) {
             val filterHashSet: HashSet<String> = HashSet()
             filterHashSet.add(Const.FILTER_ALL)
@@ -206,6 +162,50 @@ class SearchViewModel(private val searchUseCase: SearchUseCase) : BaseViewModel(
             }
             _filterHashSet.postValue(filterHashSet)
         }
+    }
+
+    fun changeViewType(viewType: SearchViewType) {
+        _viewType.postValue(viewType)
+    }
+
+    fun changeQueryText(query: String) {
+        clearFilter()
+        clearFilterHashSet()
+        clearDocumentList()
+        setPage(1)
+        search(query)
+    }
+
+    fun setFilter(filter: String) {
+        _isLoading.postValue(true)
+        _filter.postValue(filter)
+        addDisposable(
+            Observable.just(filter).observeOn(Schedulers.io())
+                .subscribe({
+                    _isLoading.postValue(false)
+                    setDocumentFilterList(it)
+                }, {
+                    _toastMessageId.postValue(R.string.error_message)
+                    _isLoading.postValue(false)
+                })
+        )
+    }
+
+    fun changeDocumentList(documentList: List<Document>?) {
+        setDocumentFilterList(filter.value, documentList)
+        setFilterHashSet(documentList)
+    }
+
+    fun loadMore(findLastCompletelyVisibleItemPosition: Int): Boolean {
+        val isLastVisibleItem =
+            findLastCompletelyVisibleItemPosition == documentFilterList.value!!.size - 1
+        if (isLastVisibleItem) {
+            if (!_isLoading.value!! && !isEndDocumentList) {
+                getImages(page.value!! + 1)
+                return true
+            }
+        }
+        return false
     }
 }
 

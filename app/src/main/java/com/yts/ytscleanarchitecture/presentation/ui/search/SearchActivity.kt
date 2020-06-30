@@ -20,7 +20,6 @@ import com.yts.ytscleanarchitecture.extension.showLoading
 import com.yts.ytscleanarchitecture.extension.startCircularRevealAnimation
 import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BackDoubleClickFinishActivity
-import com.yts.ytscleanarchitecture.presentation.base.BaseActivity
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,7 +56,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
 
     private fun initView() {
         btn_text_delete.setOnClickListener(this)
-        model.setViewType(SearchViewType.NONE)
+        model.changeViewType(SearchViewType.NONE)
     }
 
     private fun changeFragment(fragment: Fragment) {
@@ -143,8 +142,7 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
             btn_text_delete.visible(query != null && query.isNotEmpty())
         })
         model.documentList.observe(this, Observer {
-            model.setDocumentFilterList(it)
-            model.setFilterHashSet(it)
+            model.changeDocumentList(it)
         })
 
         model.filter.observe(this, Observer { filter ->
