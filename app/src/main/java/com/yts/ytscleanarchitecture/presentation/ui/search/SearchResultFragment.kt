@@ -19,8 +19,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
     FilterItemClickListener {
-    private val searchAdapter: SearchAdapter by inject()
     private val filterAdapter: FilterAdapter by inject()
+    private val searchAdapter: SearchAdapter by inject()
 
     private val model: SearchViewModel by sharedViewModel()
 
@@ -52,12 +52,6 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
         settingSearchList()
     }
 
-    override fun onDestroyView() {
-        list_search.removeOnScrollListener(searchScrollListener)
-        list_filter.adapter = null
-        list_search.adapter = null
-        super.onDestroyView()
-    }
 
     private fun settingFilterList() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -100,6 +94,14 @@ class SearchResultFragment : BaseFragment<FragmentSearchResultBinding>(),
     //필터 아이템 클릭 이벤트 리스너
     override fun onFilterItemClick(filter: String) {
         model.clickFilterItem(filter)
+    }
+
+
+    override fun onDestroyView() {
+        list_search.removeOnScrollListener(searchScrollListener)
+        list_filter.adapter = null
+        list_search.adapter = null
+        super.onDestroyView()
     }
 
 }

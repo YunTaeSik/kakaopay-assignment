@@ -1,6 +1,7 @@
 package  com.yts.ytscleanarchitecture.presentation.base
 
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.util.keyIterator
@@ -21,9 +22,11 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
 
     lateinit var binding: B
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private val tag = javaClass.simpleName
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e(tag, "onCreate")
         binding = DataBindingUtil.setContentView(this, onLayoutId())
 
         if (::binding.isInitialized) {
@@ -48,4 +51,35 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
         this.hideKeyboard()
         super.onBackPressed()
     }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e(tag, "onStart")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.e(tag, "onRestart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e(tag, "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e(tag, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e(tag, "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e(tag, "onDestroy")
+    }
+
 }

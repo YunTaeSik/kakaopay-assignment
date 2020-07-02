@@ -42,7 +42,6 @@ class IntroActivity : BaseActivity<IntroBinding>() {
         model.addDisposable(text_title.startCircularRevealAnimation())
 
         model.addDisposable(Single.timer(startSearchActivityTime, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { _ ->
                 startActivity(
                     Intent(this, SearchActivity::class.java)

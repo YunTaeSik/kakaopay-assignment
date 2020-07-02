@@ -44,19 +44,20 @@ class SearchAdapter(private val gson: Gson) :
 
         override fun onClick(v: View?) {
             val context: Context = binding.image.context
-
-            val pair: Pair<View, String> = Pair.create(binding.image, Const.TRANS_VIEW_IMAGE)
-            val optionsCompat =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    context as Activity,
-                    pair
+            if (context is Activity) {
+                val optionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        context,
+                        Pair.create(binding.image, Const.TRANS_VIEW_IMAGE)
+                    )
+                val imageDetail = Intent(context, ImageDetailActivity::class.java).apply {
+                    putExtra(Const.INTENT_IMAGE_URL, getItem(adapterPosition)?.image_url)
+                }
+                context.startActivity(
+                    imageDetail, optionsCompat.toBundle()
                 )
-            val imageDetail = Intent(context, ImageDetailActivity::class.java).apply {
-                putExtra(Const.INTENT_IMAGE_URL, getItem(adapterPosition)?.image_url)
             }
-            context.startActivity(
-                imageDetail, optionsCompat.toBundle()
-            )
+
         }
     }
 

@@ -1,6 +1,8 @@
 package com.yts.ytscleanarchitecture.presentation.base
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +21,16 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     protected abstract fun setupViewModel(): SparseArray<ViewModel>
     protected abstract fun observer()
 
+    private val name = javaClass.simpleName
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.e(name, "onAttach")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e(name, "onCreate")
         sharedElementEnterTransition = transition
         enterTransition = TransitionInflater.from(context)
             .inflateTransition(R.transition.fade_in_trans)
@@ -28,6 +38,7 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.e(name, "onDestroy")
         sharedElementReturnTransition = transition
         exitTransition = TransitionInflater.from(context)
             .inflateTransition(R.transition.fade_out_trans)
@@ -48,7 +59,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<B>(inflater, onLayoutId(), container, false)
+        Log.e(name, "onCreateView")
+        binding = DataBindingUtil.inflate(inflater, onLayoutId(), container, false)
         for (i in 0 until setupViewModel().size()) {
             binding!!.setVariable(setupViewModel().keyAt(i), setupViewModel().valueAt(i))
         }
@@ -58,6 +70,37 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Log.e(name, "onActivityCreated")
         observer()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e(name, "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e(name, "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.e(name, "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e(name, "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e(name, "onDestroyView")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.e(name, "onDetach")
     }
 }

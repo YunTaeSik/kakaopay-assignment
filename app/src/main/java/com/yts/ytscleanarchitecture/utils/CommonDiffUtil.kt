@@ -11,6 +11,4 @@ class CommonDiffUtil<B>(private val gson: Gson) : DiffUtil.ItemCallback<B>() {
     override fun areContentsTheSame(oldItem: B, newItem: B): Boolean { //객체 안에 내용물이 같은지에 대한 여부
         return (gson.toJson(oldItem)) == (gson.toJson(newItem))
     }
-
-
 }
