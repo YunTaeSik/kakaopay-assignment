@@ -75,11 +75,11 @@ class SearchActivity : BackDoubleClickFinishActivity<ActivitySearchBinding>(),
     private fun setTitle(type: SearchViewType) {
         if (type == SearchViewType.NONE) {
             val spannableStringBuilder = //빌더와 버퍼 빌더는 동기화나 멀티쓰레드환경이 아닐때 유리
-                SpannableStringBuilder(getString(R.string.kakao_commerce))
+                SpannableStringBuilder(getString(R.string.title))
             spannableStringBuilder.setSpan(
                 StyleSpan(Typeface.BOLD),
-                5,
-                13,
+                0,
+                3,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
 

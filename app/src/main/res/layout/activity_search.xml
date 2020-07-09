@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/notosans_medium"
                     android:padding="16dp"
-                    android:text="@string/kakao_commerce"
+                    android:text="@string/title"
                     android:textSize="25sp" />
 
                 <ProgressBar

@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">KaKaocommerceTestByYunTs</string>
+    <string name="app_name">yts-clean-architecture</string>
 
-    <string name="kakao_commerce" translatable="false">"KaKaocommerce"</string>
+    <string name="title" translatable="false">"Architecture"</string>
     <string name="search" translatable="false">"Search"</string>
 
-    <string name="intro_text" translatable="false">"KaKao<b>commerce</b>\nTest"</string>
+    <string name="intro_text" translatable="false">"YTS<b>clean</b>Architecture"</string>
     <string name="intro_sub_text" translatable="false">"안녕하세요\n<b>윤태식</b>입니다"</string>
 
 
