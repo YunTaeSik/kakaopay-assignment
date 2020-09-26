@@ -15,7 +15,6 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
     private var mLastClickTime: Long = 0
 
     abstract fun onLayoutId(): Int
-    abstract fun setupViewModel(): ViewModel?
     abstract fun observer()
 
     lateinit var binding: B
@@ -27,7 +26,6 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, onLayoutId())
 
         if (::binding.isInitialized) {
-            binding.setVariable(BR.model, setupViewModel())
             binding.lifecycleOwner = this
             observer()
         }
