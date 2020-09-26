@@ -15,13 +15,14 @@ import kotlinx.coroutines.CoroutineScope
  * ..이런경우(파람이 여려개인)는 Set으로 파라미터를 설정하고 build하는게 맞는걸까?
  */
 class GetBooksUseCase(private val searchRepository: SearchRepository) {
-
+    private val page = 1
+    private val size = 50
     fun invoke(
         viewModelScope: CoroutineScope,
         token: String,
         query: String
     ): Observable<*> {
-        return searchRepository.getBooks(viewModelScope, token, query, null, null, null, null)
+        return searchRepository.getBooks(viewModelScope, token, query, null, page, size, null)
     }
 
 }

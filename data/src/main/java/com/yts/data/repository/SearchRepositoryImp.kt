@@ -32,9 +32,7 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
     ): Observable<*> {
         return Pager(
             PagingConfig(
-                pageSize = size ?: 10/*,
-                enablePlaceholders = true,
-                prefetchDistance = 30*/
+                pageSize = size ?: 50
             )
         ) {
             BooksPagingSource(searchService, token, query, sort, size, target)
