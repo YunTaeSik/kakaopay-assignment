@@ -1,7 +1,7 @@
 package com.yts.domain.repository
 
-import com.yts.domain.response.SearchResponse
 import io.reactivex.Observable
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Data의 Repository의 인터페이스
@@ -17,5 +17,13 @@ public interface SearchRepository {
      * page = 	결과 페이지 번호	(기본 1)	1-50 사이 Integer
      * size = 한 페이지에 보여질 문서의 개수	(기본 80)	1-80 사이 Integer
      */
-    fun getImages(query: String, sort: String?, page: Int?, size: Int?): Observable<SearchResponse>
+    fun getBooks(
+        viewModelScope: CoroutineScope,
+        token: String,
+        query: String,
+        sort: String?,
+        page: Int?,
+        size: Int?,
+        target: String?
+    ): Observable<*>
 }

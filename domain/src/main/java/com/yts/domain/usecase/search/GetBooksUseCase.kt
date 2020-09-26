@@ -1,11 +1,9 @@
 package com.yts.domain.usecase.search
 
+import com.yts.domain.entity.Book
 import com.yts.domain.repository.SearchRepository
-import com.yts.domain.response.SearchResponse
-import com.yts.domain.usecase.base.UseCase
 import io.reactivex.Observable
-import sun.rmi.runtime.Log
-import javax.naming.directory.SearchControls
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Presenttation (ViewModel)과 Repository의 중재자 역할
@@ -16,14 +14,14 @@ import javax.naming.directory.SearchControls
  * ...UseCase는 한개의 단위로 통일하여 명확하게 나타내야하는데
  * ..이런경우(파람이 여려개인)는 Set으로 파라미터를 설정하고 build하는게 맞는걸까?
  */
-class SearchUseCase(private val searchRepository: SearchRepository)  {
-    private val imageSize = 78
+class GetBooksUseCase(private val searchRepository: SearchRepository) {
 
-    fun getImages(
-        query: String,
-        page: Int?
-    ): Observable<SearchResponse> {
-        return searchRepository.getImages(query, null, page, imageSize)
+    fun invoke(
+        viewModelScope: CoroutineScope,
+        token: String,
+        query: String
+    ): Observable<*> {
+        return searchRepository.getBooks(viewModelScope, token, query, null, null, null, null)
     }
 
 }

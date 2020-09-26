@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -33,7 +35,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
     compileOptions {
@@ -53,16 +55,24 @@ dependencies {
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
     implementation "androidx.recyclerview:recyclerview:$recyclerviewVersion"
+
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navigationVersion"
+
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    implementation "androidx.paging:paging-rxjava2-ktx:$pagingVersion"
+    testImplementation "androidx.paging:paging-common-ktx:$pagingVersion"
 
     implementation "com.android.support:multidex:$multidexVersion"
 
     implementation "com.google.android.material:material:$materialVersion"
-
-    implementation "com.airbnb.android:lottie:$lottieVersion"
-
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
 
     implementation "com.google.code.gson:gson:$gsonVersion"
 
@@ -75,7 +85,7 @@ dependencies {
     implementation "org.koin:koin-androidx-fragment:$koinVersion"
     implementation "org.koin:koin-androidx-ext:$koinVersion"
 
-    implementation "com.google.android:flexbox:$flexboxVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroidVersion"
 
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"

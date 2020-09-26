@@ -1,14 +1,21 @@
 package com.yts.ytscleanarchitecture.utils
 
+import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import com.google.gson.Gson
+import com.yts.domain.entity.Book
 
-class CommonDiffUtil<B>(private val gson: Gson) : DiffUtil.ItemCallback<B>() {
-    override fun areItemsTheSame(oldItem: B, newItem: B): Boolean { //객체가 같은지 여부
+class CommonDiffUtil<B> : DiffUtil.ItemCallback<B>() {
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: B, newItem: B): Boolean =
+        oldItem == newItem
+
+    override fun areItemsTheSame(oldItem: B, newItem: B): Boolean { // 주로 id 비교
+        if (newItem is Book && oldItem is Book) {
+            return oldItem.url == newItem.url
+        }
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: B, newItem: B): Boolean { //객체 안에 내용물이 같은지에 대한 여부
-        return (gson.toJson(oldItem)) == (gson.toJson(newItem))
-    }
 }

@@ -1,5 +1,7 @@
 package com.yts.ytscleanarchitecture.presentation.base
 
+import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.databinding.ViewDataBinding
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.extension.hideKeyboard
@@ -10,15 +12,19 @@ abstract class BackDoubleClickFinishActivity<B : ViewDataBinding> : BaseActivity
     private var mBackPressed: Long = 0
 
 
-    //두번클릭시 종료
-    override fun onBackPressed() {
-        hideKeyboard()
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-            super.onBackPressed()
-            return
-        } else {
-            this.makeToast(R.string.msg_quit)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        onBackPressedDispatcher.addCallback {
+            hideKeyboard()
+            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+                finish()
+                //return@addCallback
+            } else {
+                makeToast(R.string.msg_quit)
+            }
+            mBackPressed = System.currentTimeMillis()
         }
-        mBackPressed = System.currentTimeMillis()
     }
 }

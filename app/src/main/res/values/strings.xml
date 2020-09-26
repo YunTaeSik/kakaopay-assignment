@@ -23,5 +23,8 @@
     <string name="ment4" translatable="false">"<b>‘함께 일하는 동료를 존중하는’</b>"</string>
     <string name="ment5" translatable="false">"<b>‘윤태식’</b>이 되도록 하겠습니다"</string>
 
+    <string name="error_default">"에러가 발생했습니다. 잠시 후 시도해주세요."</string>
+    <string name="error_socket_timeout">"네트워크 연결 시간이 초과됐습니다. 네트워크 연결을 확인해주세요."</string>
+
 
 </resources>
