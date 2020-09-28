@@ -1,5 +1,6 @@
 package com.yts.data.repository.page
 
+import android.util.Log
 import androidx.paging.PagingSource
 import com.yts.data.source.remote.SearchService
 import com.yts.domain.entity.Book
@@ -13,37 +14,31 @@ class BooksPagingSource(
     private val target: String?
 ) :
     PagingSource<Int, Book>() {
-    private var page = 0
+    private var currentPage = 1
+
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
-        page++
+        currentPage = if (params is LoadParams.Append) params.key else 1
+        val searchResponse = searchService.getBooks(
+            token,
+            query,
+            sort,
+            currentPage,
+            size,
+            target
+        )
+        val documents = searchResponse.documents
+        val meta = searchResponse.meta
+        currentPage++
+
         return try {
-            var currentPage: Int? = if (params is LoadParams.Append) params.key else null
-
-            val searchResponse = searchService.getBooks(
-                token,
-                query,
-                sort,
-                currentPage,
-                size,
-                target
-            )
-
-            val documents = searchResponse.documents
-            val meta = searchResponse.meta
-
-            meta?.is_end?.let { is_end ->
-                if (!is_end) {
-                    currentPage = (currentPage ?: 1) + 1
-                }
-            }
-
             LoadResult.Page(
                 data = documents!!,
                 prevKey = null,
-                nextKey = currentPage
+                nextKey = if (meta?.is_end == true) null else currentPage
             )
         } catch (e: Exception) {
+            e.printStackTrace()
             LoadResult.Error(e)
         }
     }

@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchBooksFragment"
-        android:name="com.yts.ytscleanarchitecture.presentation.ui.search.SearchBooksFragment"
+        android:name="com.yts.ytscleanarchitecture.presentation.ui.books.BooksFragment"
         android:label="SearchBooksFragment"
-        tools:layout="@layout/fragment_search_books" />
+        tools:layout="@layout/fragment_books" />
 </navigation>

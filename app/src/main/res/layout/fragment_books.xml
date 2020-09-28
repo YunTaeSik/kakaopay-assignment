@@ -8,8 +8,8 @@
         <import type="com.yts.ytscleanarchitecture.utils.TransitionName" />
 
         <variable
-            name="searchBooksViewModel"
-            type="com.yts.ytscleanarchitecture.presentation.ui.search.SearchBooksViewModel" />
+            name="booksViewModel"
+            type="com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
-            android:fontFamily="@font/notosans_medium"
+            app:fontFamily="@font/notosans_medium"
             android:padding="16dp"
             android:text="@string/intro_text"
             android:textSize="22sp"
@@ -41,19 +41,32 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:fontFamily="@font/notosans_regular"
+            app:fontFamily="@font/notosans_regular"
             android:hint="@string/search_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:padding="16dp"
             android:singleLine="true"
-            android:text="@={searchBooksViewModel.query}"
+            android:text="@{booksViewModel.query}"
             android:textColor="@color/textColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_title" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_empty"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:fontFamily="@font/notosans_regular"
+            android:lineSpacingExtra="32dp"
+            android:padding="16dp"
+            android:text="@string/text_empty_introduce"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_search" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_book"
@@ -62,14 +75,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_search" />
+            app:layout_constraintTop_toBottomOf="@+id/text_search"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_book" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/notosans_medium"
+            app:fontFamily="@font/notosans_medium"
             android:text="@string/intro_sub_text"
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"

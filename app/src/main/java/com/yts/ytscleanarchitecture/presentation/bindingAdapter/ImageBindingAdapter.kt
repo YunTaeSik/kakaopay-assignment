@@ -14,7 +14,8 @@ object ImageBindingAdapter {
 
             Glide.with(view.context)
                 .load(url)
-                .thumbnail(0.3f)
+                .centerCrop()
+                .error(R.drawable.img_error)
                 .into(view)
 
         }

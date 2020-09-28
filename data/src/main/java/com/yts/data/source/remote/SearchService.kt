@@ -13,8 +13,8 @@ import retrofit2.http.Query
  * 401 인증실패 404페이지를 찾을수없음 500서버에서 문제 발생
  */
 interface SearchService {
-    @GET("/v3/search/book ")
-    fun getBooks(
+    @GET("/v3/search/book")
+    suspend fun getBooks(
         @Header("Authorization") serverAuth: String,
         @Query("query") query: String,
         @Query("sort") sort: String?,
