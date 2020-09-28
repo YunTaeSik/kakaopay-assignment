@@ -6,6 +6,10 @@
     <data>
 
         <import type="com.yts.ytscleanarchitecture.utils.TransitionName" />
+
+        <variable
+            name="searchBooksViewModel"
+            type="com.yts.ytscleanarchitecture.presentation.ui.search.SearchBooksViewModel" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -44,6 +48,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:singleLine="true"
+            android:text="@={searchBooksViewModel.query}"
             android:textColor="@color/textColor"
             android:textSize="25sp"
             app:layout_constraintEnd_toEndOf="parent"

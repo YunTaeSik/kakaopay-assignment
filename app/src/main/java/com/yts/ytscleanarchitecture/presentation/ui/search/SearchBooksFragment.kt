@@ -3,14 +3,18 @@ package com.yts.ytscleanarchitecture.presentation.ui.search
 import android.os.Bundle
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.lifecycleScope
+import com.yts.ytscleanarchitecture.BR
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.FragmentSearchBooksBinding
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_search_books.*
 import kotlinx.coroutines.delay
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SearchBooksFragment : BaseFragment<FragmentSearchBooksBinding>(),
     MotionLayout.TransitionListener {
+    private val model: SearchBooksViewModel by sharedViewModel()
+
     override fun onLayoutId(): Int {
         return R.layout.fragment_search_books
     }
@@ -23,6 +27,7 @@ class SearchBooksFragment : BaseFragment<FragmentSearchBooksBinding>(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        addBindingVariable(BR.searchBooksViewModel, model)
         layout_root.setTransitionListener(this)
     }
 

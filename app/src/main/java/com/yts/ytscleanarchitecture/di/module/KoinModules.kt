@@ -6,8 +6,10 @@ import com.yts.data.source.remote.SearchService
 import com.yts.domain.repository.SearchRepository
 import com.yts.domain.usecase.search.GetBooksUseCase
 import com.yts.domain.usecase.search.GetTokenUseCase
+import com.yts.ytscleanarchitecture.presentation.ui.search.SearchBooksViewModel
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.schedulers.Schedulers
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -49,6 +51,9 @@ var netModule = module {
 
 
 var viewModelModule = module {
+    viewModel {
+        SearchBooksViewModel(get(), get())
+    }
 }
 
 var extModule = module {

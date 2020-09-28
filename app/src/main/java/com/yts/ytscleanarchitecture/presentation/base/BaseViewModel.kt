@@ -21,10 +21,6 @@ abstract class BaseViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> get() = _isLoading
     val toastMessageId: LiveData<Int> get() = _toastMessageId
 
-    fun addDisposable(disposable: Disposable) {
-        compositeDisposable.add(disposable)
-    }
-
     fun <T> addDisposable(
         observable: Observable<T>,
         onSuccess: ((t: T) -> Unit),
