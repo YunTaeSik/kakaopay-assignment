@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
@@ -19,11 +20,15 @@ import com.yts.ytscleanarchitecture.databinding.FragmentBooksBinding
 import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
 import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
+import com.yts.ytscleanarchitecture.utils.AnimationDuration
 import com.yts.ytscleanarchitecture.utils.TransitionName
 import kotlinx.android.synthetic.main.fragment_books.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.launch
+import okhttp3.Dispatcher
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -39,27 +44,14 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHoldExitTransition()
-        setSharedElementTransition()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         addBindingVariable(BR.booksViewModel, booksViewModel)
-        setLayoutTransitionListener()
         setBookAdapter()
         setGotoSearch()
-    }
-
-    private fun setLayoutTransitionListener() {
-        layout_root.setTransitionListener(this)
-
-        text_title.setOnClickListener {
-            if (layout_root.progress == 0.0f) {
-                layout_root.setTransition(R.id.intro_to_result)
-                layout_root.transitionToEnd()
-            }
-        }
     }
 
     private fun setBookAdapter() {
@@ -75,22 +67,29 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(),
     }
 
     override fun observer() {
-        searchViewModel.query.observe(this, {
+        searchViewModel.query.observe(viewLifecycleOwner, {
+
+            Log.e("test", it)
             text_search.text = it
             booksViewModel.getBooks(it)
         })
-        booksViewModel.isLoading.observe(this, {
+        booksViewModel.isLoading.observe(viewLifecycleOwner, {
             loading.visible(it)
         })
 
-        booksViewModel.books.observe(this, {
-            lifecycleScope.launchWhenCreated {
-                booksAdapter.submitData(lifecycle, it)
+        booksViewModel.books.observe(viewLifecycleOwner, {
+            // viewLifecycleOwner.lifecycle.coroutineScope.
+            lifecycleScope.launchWhenResumed {
+                //delay(AnimationDuration.LARGE_COLLAPSING + 50)
+                booksAdapter.submitData(it)
             }
         })
-        booksAdapter.loadStateFlow.asLiveData().observe(this, {
-            text_empty.visible(booksAdapter.snapshot().size <= 0)
-        })
+        /*      booksAdapter.loadStateFlow.asLiveData().observe(viewLifecycleOwner, {
+
+                  lifecycleScope.launch(Dispatchers.Main) {
+                      text_empty.visible(false)
+                  }
+              })*/
     }
 
     private fun gotoSearch() {

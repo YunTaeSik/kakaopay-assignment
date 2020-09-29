@@ -41,7 +41,7 @@
             android:inputType="text"
             android:padding="16dp"
             android:singleLine="true"
-            android:text="@={searchViewModel.query}"
+            android:text="@{searchViewModel.query}"
             android:textColor="@color/textColor"
             android:textSize="25sp"
             app:fontFamily="@font/notosans_regular"

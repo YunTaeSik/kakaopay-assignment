@@ -21,8 +21,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        addBindingVariable(BR.searchViewModel,searchViewModel)
+        addBindingVariable(BR.searchViewModel, searchViewModel)
         btn_back.setOnClickListener {
+            searchViewModel.setQuery(text_search.text.toString())
             findNavController().navigateUp()
         }
     }

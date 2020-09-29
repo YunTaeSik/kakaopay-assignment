@@ -9,9 +9,7 @@ fun View.visible(value: Boolean) {
     } else {
         View.GONE
     }
-    if (this.visibility != visible) {
-        this.visibility = visibility
-    }
+
 }
 
 
