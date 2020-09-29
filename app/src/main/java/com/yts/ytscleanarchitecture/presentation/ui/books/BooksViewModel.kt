@@ -16,12 +16,9 @@ class BooksViewModel(
     private val getBooksUseCase: GetBooksUseCase
 ) : BaseViewModel() {
 
-    private var _query = MutableLiveData<String>()
     private var _books = MutableLiveData<PagingData<Book>>()
 
     val books: LiveData<PagingData<Book>> get() = _books
-    val query: LiveData<String> get() = _query
-
 
     @Suppress("UNCHECKED_CAST")
     fun getBooks(query: String) {

@@ -11,6 +11,7 @@ import com.yts.ytscleanarchitecture.databinding.ItemBookBinding
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
 
 class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(CommonDiffUtil()) {
+    private var booksAdapterListener: OnBooksAdapterListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val item = DataBindingUtil.inflate<ItemBookBinding>(
@@ -24,6 +25,10 @@ class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(Common
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    fun setOnBooksAdapterListener(booksAdapterListener: OnBooksAdapterListener) {
+        this.booksAdapterListener = booksAdapterListener
     }
 
     inner class BookViewHolder(var binding: ItemBookBinding) :
@@ -40,9 +45,12 @@ class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(Common
                 binding.textAuthors.apply {
                     text = book.authors?.toList().toString()
                 }
+
+                binding.root.setOnClickListener {
+                    booksAdapterListener?.gotoDetailBook(data, bindingAdapterPosition)
+                }
                 binding.executePendingBindings()
             }
-
         }
     }
 

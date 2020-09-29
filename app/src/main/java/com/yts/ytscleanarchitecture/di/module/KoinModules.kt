@@ -8,6 +8,7 @@ import com.yts.domain.usecase.search.GetBooksUseCase
 import com.yts.domain.usecase.search.GetTokenUseCase
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksAdapter
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel
+import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -53,6 +54,9 @@ var netModule = module {
 var viewModelModule = module {
     viewModel {
         BooksViewModel(get(), get())
+    }
+    viewModel {
+        SearchViewModel()
     }
 }
 

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.google.android.material.transition.Hold
 import com.google.android.material.transition.MaterialContainerTransform
 import com.yts.ytscleanarchitecture.utils.AnimationDuration
 import com.yts.ytscleanarchitecture.utils.Const
@@ -32,6 +33,11 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
 
     protected fun addBindingVariable(variableId: Int, value: Any) {
         binding.setVariable(variableId, value)
+    }
+    protected fun setHoldExitTransition() {
+        exitTransition = Hold().apply {
+            duration = AnimationDuration.LARGE_EXPANDING
+        }
     }
 
     protected fun setSharedElementTransition() {
