@@ -6,6 +6,7 @@ import androidx.paging.rxjava2.cachedIn
 import androidx.paging.rxjava2.observable
 import com.yts.data.repository.page.BooksPagingSource
 import com.yts.data.source.remote.SearchService
+import com.yts.domain.entity.Book
 import com.yts.domain.repository.SearchRepository
 import io.reactivex.Observable
 import kotlinx.coroutines.CoroutineScope
@@ -32,10 +33,26 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
     ): Observable<*> {
         return Pager(
             PagingConfig(
-                pageSize = size ?: 50
+                pageSize = size ?: 50,
+                enablePlaceholders = false,
+                prefetchDistance = size ?: 50,
+                initialLoadSize = size ?: 50
             )
         ) {
             BooksPagingSource(searchService, token, query, sort, size, target)
         }.observable.cachedIn(viewModelScope)
+    }
+
+    override fun getKeywords(
+        token: String,
+        query: String,
+        sort: String?,
+        page: Int?,
+        size: Int?,
+        target: String?
+    ): Observable<List<Book>> {
+        return searchService.getKeywords(token, query, sort, page, size, target).flatMap {
+            Observable.just(it.documents)
+        }
     }
 }

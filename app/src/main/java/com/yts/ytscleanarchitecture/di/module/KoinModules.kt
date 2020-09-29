@@ -5,6 +5,7 @@ import com.yts.data.repository.SearchRepositoryImp
 import com.yts.data.source.remote.SearchService
 import com.yts.domain.repository.SearchRepository
 import com.yts.domain.usecase.search.GetBooksUseCase
+import com.yts.domain.usecase.search.GetKeywordsUseCase
 import com.yts.domain.usecase.search.GetTokenUseCase
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksAdapter
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel
@@ -29,6 +30,7 @@ val repositoryModule = module {
     single<SearchRepository> { SearchRepositoryImp(get()) }
 
     single<GetBooksUseCase> { GetBooksUseCase(get()) }
+    single<GetKeywordsUseCase> { GetKeywordsUseCase(get()) }
     single<GetTokenUseCase> { GetTokenUseCase(Const.REST_API_KEY) }
 }
 
@@ -56,7 +58,7 @@ var viewModelModule = module {
         BooksViewModel(get(), get())
     }
     viewModel {
-        SearchViewModel()
+        SearchViewModel(get(), get())
     }
 }
 

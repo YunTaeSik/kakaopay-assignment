@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yts.domain.entity.Book
@@ -19,6 +22,8 @@ import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
 import com.yts.ytscleanarchitecture.utils.TransitionName
 import kotlinx.android.synthetic.main.fragment_books.*
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -44,15 +49,16 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(),
         setLayoutTransitionListener()
         setBookAdapter()
         setGotoSearch()
-        //  booksViewModel.getBooks("미움")
     }
 
     private fun setLayoutTransitionListener() {
         layout_root.setTransitionListener(this)
 
         text_title.setOnClickListener {
-            layout_root.setTransition(R.id.intro_to_result)
-            layout_root.transitionToEnd()
+            if (layout_root.progress == 0.0f) {
+                layout_root.setTransition(R.id.intro_to_result)
+                layout_root.transitionToEnd()
+            }
         }
     }
 
@@ -79,9 +85,11 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(),
 
         booksViewModel.books.observe(this, {
             lifecycleScope.launchWhenCreated {
-                booksAdapter.submitData(it)
-                text_empty.visible(booksAdapter.itemCount <= 0)
+                booksAdapter.submitData(lifecycle, it)
             }
+        })
+        booksAdapter.loadStateFlow.asLiveData().observe(this, {
+            text_empty.visible(booksAdapter.snapshot().size <= 0)
         })
     }
 

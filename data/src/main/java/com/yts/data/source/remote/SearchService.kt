@@ -22,4 +22,14 @@ interface SearchService {
         @Query("size") size: Int?,
         @Query("target") target: String?
     ): SearchResponse
+
+    @GET("/v3/search/book")
+    fun getKeywords(
+        @Header("Authorization") serverAuth: String,
+        @Query("query") query: String,
+        @Query("sort") sort: String?,
+        @Query("page") page: Int?,
+        @Query("size") size: Int?,
+        @Query("target") target: String?
+    ): Observable<SearchResponse>
 }

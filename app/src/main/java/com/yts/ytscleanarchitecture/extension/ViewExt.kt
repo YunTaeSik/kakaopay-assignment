@@ -4,10 +4,13 @@ import android.view.View
 import android.widget.ProgressBar
 
 fun View.visible(value: Boolean) {
-    if (value) {
-        this.visibility = View.VISIBLE
+    val visible = if (value) {
+        View.VISIBLE
     } else {
-        this.visibility = View.GONE
+        View.GONE
+    }
+    if (this.visibility != visible) {
+        this.visibility = visibility
     }
 }
 

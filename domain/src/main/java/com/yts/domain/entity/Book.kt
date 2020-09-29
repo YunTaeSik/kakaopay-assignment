@@ -12,7 +12,7 @@ data class Book(
     val contents: String? = null,
     val url: String? = null,
     val isbn: String? = null,
-    val datetime: Date? = null,
+    val datetime: String? = null,
     val authors: Array<String>? = null,
     val publisher: String? = null,
     val translators: Array<String>? = null,

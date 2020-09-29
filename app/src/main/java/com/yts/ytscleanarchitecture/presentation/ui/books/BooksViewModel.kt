@@ -22,16 +22,19 @@ class BooksViewModel(
 
     @Suppress("UNCHECKED_CAST")
     fun getBooks(query: String) {
-        addDisposable(
-            getBooksUseCase.invoke(
-                viewModelScope = viewModelScope,
-                token = getTokenUseCase.invoke(),
-                query
-            ), onSuccess = {
-                Log.e("test", Gson().toJson(it))
-                _books.value = it as PagingData<Book>
-            }, onError = {
-                commonError(it)
-            })
+        if (query.isNotEmpty()) {
+            addDisposable(
+                getBooksUseCase.invoke(
+                    viewModelScope = viewModelScope,
+                    token = getTokenUseCase.invoke(),
+                    query
+                ), onSuccess = {
+                    _books.value = it as PagingData<Book>
+                }, onError = {
+                    commonError(it)
+                })
+        } else {
+            _books.value = PagingData.empty()
+        }
     }
 }
