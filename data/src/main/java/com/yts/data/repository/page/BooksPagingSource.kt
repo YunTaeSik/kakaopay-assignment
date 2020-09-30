@@ -2,6 +2,7 @@ package com.yts.data.repository.page
 
 import android.util.Log
 import androidx.paging.PagingSource
+import com.yts.data.exception.PageDataEmptyException
 import com.yts.data.source.remote.SearchService
 import com.yts.domain.entity.Book
 
@@ -18,28 +19,36 @@ class BooksPagingSource(
 
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Book> {
-        currentPage = if (params is LoadParams.Append) params.key else 1
-        val searchResponse = searchService.getBooks(
-            token,
-            query,
-            sort,
-            currentPage,
-            size,
-            target
-        )
-        val documents = searchResponse.documents
-        val meta = searchResponse.meta
-        currentPage++
+        try {
+            currentPage = if (params is LoadParams.Append) params.key else 1
+            val searchResponse = searchService.getBooks(
+                token,
+                query,
+                sort,
+                currentPage,
+                size,
+                target
+            )
+            val documents = searchResponse.documents
+            val meta = searchResponse.meta
 
-        return try {
-            LoadResult.Page(
+            if (isFirstCallEmptyData(currentPage, documents?.size ?: 0)) {
+                return LoadResult.Error(PageDataEmptyException())
+            }
+
+            currentPage++
+            return LoadResult.Page(
                 data = documents!!,
                 prevKey = null,
                 nextKey = if (meta?.is_end == true) null else currentPage
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            LoadResult.Error(e)
+            return LoadResult.Error(e)
         }
     }
+
+    private fun isFirstCallEmptyData(page: Int, dataSize: Int): Boolean =
+        page == 1 && ((dataSize) <= 0)
+
 }

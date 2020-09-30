@@ -1,26 +1,22 @@
 <resources>
     <string name="app_name">yts-clean-architecture</string>
 
-    <string name="title" translatable="false">"KaKao<b>Pay</b>"</string>
     <string name="search" translatable="false">"Search"</string>
 
-    <string name="intro_text" translatable="false">"KaKao<b>Pay</b>\nAssignment"</string>
     <string name="intro_sub_text" translatable="false">"안녕하세요\n<b>윤태식</b>입니다"</string>
 
 
     <string name="msg_quit">"뒤로" 버튼을 한번 더 누르시면 종료됩니다.</string>
 
-    <string name="cancel">"취소"</string>
     <string name="search_hint">"이미지를 검색해보세요"</string>
 
-    <string name="error_message">"에러가 발생했습니다. 네트워크를 확인해주세요."</string>
-    <string name="error_query_text_null_message">"ERROR = QUERY NULL"</string>
     <string name="error_query_size_null_message">"검색결과가 없습니다."</string>
 
     <string name="text_empty_introduce">"<b>‘내가 먼저 실행하는’</b>\n<b>‘꾸준히 학습하는’</b>\n<b>‘과감히 선택하고 실행하는’</b>\n<b>‘다양한 사고를 가지는’</b>"\n<b>‘윤태식’</b>이 되도록 하겠습니다</string>
 
-    <string name="error_default">"에러가 발생했습니다. 잠시 후 시도해주세요."</string>
+    <string name="error_default">"오류가 발생했습니다. 잠시 후 시도해주세요."</string>
     <string name="error_socket_timeout">"네트워크 연결 시간이 초과됐습니다. 네트워크 연결을 확인해주세요."</string>
+    <string name="error_https">"네트워크 연결 오류가 발생했습니다. 네트워크 연결을 확인해주세요."</string>
 
 
 </resources>

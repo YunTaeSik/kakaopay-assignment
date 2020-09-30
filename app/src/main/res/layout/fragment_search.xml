@@ -8,8 +8,8 @@
         <import type="com.yts.ytscleanarchitecture.utils.TransitionName" />
 
         <variable
-            name="searchViewModel"
-            type="com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel" />
+            name="booksViewModel"
+            type="com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel" />
     </data>
 
 
@@ -17,8 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        android:focusable="false"
-        android:focusableInTouchMode="true"
+
         android:transitionName="@{TransitionName.BOOKS_SEARCH_LAYOUT}">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -41,7 +40,7 @@
             android:inputType="text"
             android:padding="16dp"
             android:singleLine="true"
-            android:text="@{searchViewModel.query}"
+            android:text="@={booksViewModel.query}"
             android:textColor="@color/textColor"
             android:textSize="25sp"
             app:fontFamily="@font/notosans_regular"

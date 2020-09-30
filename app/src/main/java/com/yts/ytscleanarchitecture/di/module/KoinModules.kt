@@ -7,8 +7,10 @@ import com.yts.domain.repository.SearchRepository
 import com.yts.domain.usecase.search.GetBooksUseCase
 import com.yts.domain.usecase.search.GetKeywordsUseCase
 import com.yts.domain.usecase.search.GetTokenUseCase
+import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewModel
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksAdapter
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel
+import com.yts.ytscleanarchitecture.presentation.ui.books.OnBooksAdapterListener
 import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.schedulers.Schedulers
@@ -35,7 +37,7 @@ val repositoryModule = module {
 }
 
 var adapterModule = module {
-    factory { BooksAdapter() }
+    factory { (listener: OnBooksAdapterListener) ->BooksAdapter(  listener) }
 
 }
 
@@ -45,11 +47,23 @@ var netModule = module {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(Const.BASE_URL)
+            .client(get())
             .build()
     }
+
+    single<OkHttpClient> {
+        OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .build()
+    }
+
     single<SearchService> {
         get<Retrofit>().create(SearchService::class.java)
     }
+
+
 }
 
 
@@ -59,6 +73,9 @@ var viewModelModule = module {
     }
     viewModel {
         SearchViewModel(get(), get())
+    }
+    viewModel {
+        BookDetailViewModel()
     }
 }
 

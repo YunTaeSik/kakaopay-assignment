@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background">#ffffff</color>
-    <color name="cardBackground">#ffffff</color>
 
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorPrimaryLight">#ffffff</color>
-    <color name="colorAccent">#000000</color>
+    <color name="colorAccent">@color/colorOrange</color>
 
     <color name="textColor">#000000</color>
     <color name="textColorHint">#dbdfe0</color>
@@ -14,8 +12,6 @@
     <color name="colorOrange">#FB8C00</color>
 
     <color name="gray">#6e7375</color>
-    <color name="grayLight">#e4e7e8</color>
-    <color name="grayBackground">#f5f6f8</color>
 
 
     <color name="tintColor">#000000</color>

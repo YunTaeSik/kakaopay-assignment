@@ -3,41 +3,35 @@ package com.yts.ytscleanarchitecture.presentation.ui.books
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.coroutineScope
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.*
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.yts.domain.entity.Book
 import com.yts.ytscleanarchitecture.BR
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.FragmentBooksBinding
 import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
-import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
-import com.yts.ytscleanarchitecture.utils.AnimationDuration
-import com.yts.ytscleanarchitecture.utils.TransitionName
+import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewModel
 import kotlinx.android.synthetic.main.fragment_books.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.parameter.parametersOf
+import java.lang.Exception
 
-class BooksFragment : BaseFragment<FragmentBooksBinding>(),
-    MotionLayout.TransitionListener, OnBooksAdapterListener {
+class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListener {
     private val booksViewModel: BooksViewModel by sharedViewModel()
-    private val searchViewModel: SearchViewModel by sharedViewModel()
+    private val bookDetailViewModel: BookDetailViewModel by sharedViewModel()
+    private val booksAdapter: BooksAdapter by inject() { parametersOf(this) }
 
-    private val booksAdapter: BooksAdapter by inject()
 
     override fun onLayoutId(): Int = R.layout.fragment_books
 
@@ -48,92 +42,67 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(),
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         addBindingVariable(BR.booksViewModel, booksViewModel)
+        setOnDeleteBtnClick()
         setBookAdapter()
-        setGotoSearch()
     }
 
     private fun setBookAdapter() {
-        booksAdapter.setOnBooksAdapterListener(this)
         list_book.layoutManager = LinearLayoutManager(context)
-        list_book.adapter = booksAdapter
-    }
 
-    private fun setGotoSearch() {
-        text_search.setOnClickListener {
-            gotoSearch()
+        list_book.adapter = booksAdapter.withLoadStateFooter(
+            footer = BooksPageLoadStateAdapter(booksAdapter)
+        )
+        lifecycleScope.launch {
+            booksAdapter.loadStateFlow.collectLatest {
+                if (it.refresh is LoadState.Error) {
+                    val error = it.refresh as LoadState.Error
+                    booksViewModel.loadError(error.error)
+                }
+            }
         }
     }
 
     override fun observer() {
-        searchViewModel.query.observe(viewLifecycleOwner, {
+        booksViewModel.isLoading.observe(viewLifecycleOwner, {
+            loading?.visible(it)
+        })
+        booksViewModel.toastMessageId.observe(viewLifecycleOwner, { toastMessageId ->
+            context?.let { context ->
+                Toast.makeText(context, toastMessageId, Toast.LENGTH_SHORT).show()
+            }
+        })
 
-            Log.e("test", it)
-            text_search.text = it
+        booksViewModel.query.observe(viewLifecycleOwner, {
+            btn_text_delete?.visible(it.isNotEmpty())
             booksViewModel.getBooks(it)
         })
-        booksViewModel.isLoading.observe(viewLifecycleOwner, {
-            loading.visible(it)
+        booksViewModel.booksType.observe(viewLifecycleOwner, { type ->
+            text_empty?.visible(type == BooksFragmentType.EMPTY)
+            list_book?.visible(type == BooksFragmentType.RESULT)
         })
 
         booksViewModel.books.observe(viewLifecycleOwner, {
-            // viewLifecycleOwner.lifecycle.coroutineScope.
-            lifecycleScope.launchWhenResumed {
-                //delay(AnimationDuration.LARGE_COLLAPSING + 50)
+            lifecycleScope.launchWhenCreated {
                 booksAdapter.submitData(it)
             }
         })
-        /*      booksAdapter.loadStateFlow.asLiveData().observe(viewLifecycleOwner, {
-
-                  lifecycleScope.launch(Dispatchers.Main) {
-                      text_empty.visible(false)
-                  }
-              })*/
     }
 
-    private fun gotoSearch() {
-        findNavController().navigate(
-            R.id.action_searchBooksFragment_to_searchFragment, null, null,
-            FragmentNavigatorExtras(
-                layout_search to TransitionName.BOOKS_SEARCH_LAYOUT
-            )
-        )
-    }
-
-    override fun gotoDetailBook(book: Book, position: Int) {
-    }
-
-
-    override fun onTransitionStarted(motionLayout: MotionLayout?, startId: Int, endId: Int) {
-    }
-
-    override fun onTransitionChange(
-        motionLayout: MotionLayout?,
-        startId: Int,
-        endId: Int,
-        progress: Float
-    ) {
-
-    }
-
-    override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-        if (currentId == R.id.introduce) {
-            lifecycleScope.launchWhenCreated {
-                delay(500)
-                layout_root.transitionToStart()
-            }
-        } else if (currentId == R.id.search_base) {
-            layout_root.setTransition(R.id.search_base_to_drag)
+    private fun setOnDeleteBtnClick() {
+        btn_text_delete.setOnClickListener {
+            booksViewModel.initQuery()
         }
     }
 
-    override fun onTransitionTrigger(
-        motionLayout: MotionLayout?,
-        triggerId: Int,
-        positive: Boolean,
-        progress: Float
-    ) {
+    override fun gotoDetailBook(book: Book, position: Int, extras: FragmentNavigator.Extras) {
+        activity?.let {
+            bookDetailViewModel.setBookAndPosition(book, position)
+            Navigation.findNavController(it, R.id.fragment_main).navigate(
+                R.id.action_booksFragment_to_bookDetailFragment, null, null, extras
+            )
+        }
+
     }
 
 

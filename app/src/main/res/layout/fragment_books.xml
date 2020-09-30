@@ -12,87 +12,89 @@
             type="com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_search_books_scene">
+        android:layout_height="match_parent">
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:padding="16dp"
-            android:text="@string/intro_text"
+            android:layout_marginTop="40dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/search"
             android:textSize="22sp"
             app:fontFamily="@font/notosans_medium"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:background="@color/grayBackground"
+            android:background="@color/background"
             android:clipToPadding="false"
-            android:padding="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
             android:transitionName="@{TransitionName.BOOKS_SEARCH_LAYOUT}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_title">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_search"
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/text_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
+                android:background="@color/background"
+                android:hint="@string/search_hint"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true"
+                android:text="@={booksViewModel.query}"
+                android:textColor="@color/textColor"
+                android:textSize="25sp"
+                app:fontFamily="@font/notosans_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/background"
-                    android:hint="@string/search_hint"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:padding="16dp"
-                    android:singleLine="true"
-                    android:textColor="@color/textColor"
-                    android:textSize="13sp"
-                    android:transitionName="@{TransitionName.BOOKS_SEARCH_TEXT}"
-                    app:fontFamily="@font/notosans_regular"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-            </com.google.android.material.card.MaterialCardView>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_text_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close_black_16dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_book"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/grayBackground"
             android:clipToPadding="false"
+            android:paddingTop="8dp"
             android:paddingBottom="16dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_search"
             tools:itemCount="3"
             tools:listitem="@layout/item_book" />
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_empty"
@@ -102,25 +104,12 @@
             android:padding="16dp"
             android:text="@string/text_empty_introduce"
             android:textSize="22sp"
+            android:visibility="visible"
             app:fontFamily="@font/notosans_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_search" />
-
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_sub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/intro_sub_text"
-            android:textSize="22sp"
-            app:fontFamily="@font/notosans_medium"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8" />
 
         <ProgressBar
             android:id="@+id/loading"
@@ -131,8 +120,22 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_search" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_search" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/intro_sub_text"
+            android:textSize="22sp"
+            android:visibility="gone"
+            app:fontFamily="@font/notosans_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8" />
 
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -33,11 +33,13 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
     ): Observable<*> {
         return Pager(
             PagingConfig(
-                pageSize = size ?: 50
+                pageSize = size ?: 50,
+                prefetchDistance = size ?: 50
             )
         ) {
             BooksPagingSource(searchService, token, query, sort, size, target)
         }.observable.cachedIn(viewModelScope)
+
     }
 
     override fun getKeywords(

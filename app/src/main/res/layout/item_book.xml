@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="com.yts.ytscleanarchitecture.utils.TransitionName" />
+
+        <variable
+            name="position"
+            type="Integer" />
+
         <variable
             name="book"
             type="com.yts.domain.entity.Book" />
@@ -12,13 +18,16 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         android:clipToPadding="false"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:transitionName="@{TransitionName.BOOKS_ITEM_LAYOUT+position}">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_image"
@@ -29,23 +38,23 @@
             app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearance="@style/ShapeAppearance.App.MediumComponent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.imageview.ShapeableImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/image_book"
                     srcCompat="@{book.thumbnail}"
                     android:layout_width="100dp"
                     android:layout_height="0dp"
+                    android:transitionName="@{TransitionName.BOOKS_ITEM_IMAGE+position}"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media" />
+                    app:strokeColor="@android:color/transparent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/text_title"
@@ -58,6 +67,7 @@
                     android:maxLines="1"
                     android:text="@{book.title}"
                     android:textSize="13sp"
+                    android:transitionName="@{TransitionName.BOOKS_ITEM_TITLE+position}"
                     app:fontFamily="@font/notosans_bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/image_book"

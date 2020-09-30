@@ -3,15 +3,17 @@ package com.yts.ytscleanarchitecture.presentation.ui.books
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yts.domain.entity.Book
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.ItemBookBinding
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
+import com.yts.ytscleanarchitecture.utils.TransitionName
 
-class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(CommonDiffUtil()) {
-    private var booksAdapterListener: OnBooksAdapterListener? = null
+class BooksAdapter(val booksAdapterListener: OnBooksAdapterListener) :
+    PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(CommonDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val item = DataBindingUtil.inflate<ItemBookBinding>(
@@ -27,15 +29,27 @@ class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(Common
         holder.bind(getItem(position))
     }
 
-    fun setOnBooksAdapterListener(booksAdapterListener: OnBooksAdapterListener) {
-        this.booksAdapterListener = booksAdapterListener
+    override fun onBindViewHolder(
+        holder: BookViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isNotEmpty()) {
+            val item = getItem(position)
+            holder.bind(item)
+        } else {
+            onBindViewHolder(holder, position)
+        }
     }
+
 
     inner class BookViewHolder(var binding: ItemBookBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Book?) {
             data?.let { book ->
                 binding.book = book
+                binding.position = bindingAdapterPosition
+
                 binding.textPrice.apply {
                     book.price?.let { price ->
                         text = "₩" + (price.toFloat() / 1000.0f)
@@ -47,12 +61,16 @@ class BooksAdapter : PagingDataAdapter<Book, BooksAdapter.BookViewHolder>(Common
                 }
 
                 binding.root.setOnClickListener {
-                    booksAdapterListener?.gotoDetailBook(data, bindingAdapterPosition)
+                    booksAdapterListener?.gotoDetailBook(
+                        data, bindingAdapterPosition,
+                        FragmentNavigatorExtras(
+                            binding.layoutRoot to TransitionName.BOOKS_ITEM_LAYOUT + bindingAdapterPosition
+                        )
+                    )
                 }
                 binding.executePendingBindings()
             }
         }
     }
-
 
 }

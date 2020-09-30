@@ -33,24 +33,20 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
-    </style>
 
-    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSize">8dp</item>
+        <item name="android:windowActivityTransitions" tools:targetApi="lollipop">true</item>
+        <item name="android:windowSharedElementEnterTransition" tools:targetApi="lollipop">
+            @transition/shared_element_trans
+        </item>
+        <item name="android:windowSharedElementExitTransition" tools:targetApi="lollipop">
+            @transition/shared_element_trans
+        </item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.Card.Media" parent="">
-        <item name="cornerFamily">cut</item>
-        <item name="cornerSizeTopLeft">8dp</item>
-        <item name="cornerSizeBottomLeft">8dp</item>
-        <item name="cornerSizeTopRight">0dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
     </style>
 
-
-    <style name="Progress">
-        <item name="colorAccent">@color/tintColor</item>
-    </style>
 
 </resources>
