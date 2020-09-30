@@ -1,6 +1,5 @@
 package com.yts.domain.entity
 
-import java.util.*
 
 /**
  * Entity는 순수한 Kotlin모듈입니다. 안드로이드와 의존성을 가지면 안됩니다

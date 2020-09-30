@@ -30,20 +30,6 @@ class BooksAdapter(val booksAdapterListener: OnBooksAdapterListener) :
         holder.bind(getItem(position))
     }
 
-    override fun onBindViewHolder(
-        holder: BookViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        if (payloads.isNotEmpty()) {
-            val item = getItem(position)
-            holder.bind(item)
-        } else {
-            onBindViewHolder(holder, position)
-        }
-    }
-
-
     inner class BookViewHolder(var binding: ItemBookBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Book?) {
@@ -51,20 +37,32 @@ class BooksAdapter(val booksAdapterListener: OnBooksAdapterListener) :
                 binding.book = book
                 binding.position = bindingAdapterPosition
 
-                binding.textPrice.priceDived(book.price)
-                binding.textAuthors.apply {
-                    text = book.authors?.toList().toString()
-                }
-
-                binding.root.setOnClickListener {
-                    booksAdapterListener.gotoDetailBook(
-                        data, bindingAdapterPosition,
-                        FragmentNavigatorExtras(
-                            binding.layoutRoot to TransitionName.BOOKS_ITEM_LAYOUT + bindingAdapterPosition
-                        )
-                    )
-                }
+                setTextPrice(book.price ?: 0)
+                setTextAuthors(book.authors)
+                setGotoDetailBook(book)
                 binding.executePendingBindings()
+            }
+        }
+
+        private fun setTextPrice(price: Int) {
+            binding.textPrice.priceDived(price)
+        }
+
+        private fun setTextAuthors(authors: Array<String>?) {
+            binding.textAuthors.apply {
+                text = authors?.toList().toString()
+            }
+        }
+
+
+        private fun setGotoDetailBook(book: Book) {
+            binding.root.setOnClickListener {
+                booksAdapterListener.gotoDetailBook(
+                    book, bindingAdapterPosition,
+                    FragmentNavigatorExtras(
+                        binding.layoutRoot to TransitionName.BOOKS_ITEM_LAYOUT + bindingAdapterPosition
+                    )
+                )
             }
         }
     }

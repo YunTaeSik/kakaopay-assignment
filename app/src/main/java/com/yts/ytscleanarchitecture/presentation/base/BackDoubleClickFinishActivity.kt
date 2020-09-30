@@ -14,13 +14,14 @@ abstract class BackDoubleClickFinishActivity<B : ViewDataBinding> : BaseActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setOnBackDoublePressedFinish()
+    }
 
-
+    private fun setOnBackDoublePressedFinish() {
         onBackPressedDispatcher.addCallback {
             hideKeyboard()
             if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
                 finish()
-                //return@addCallback
             } else {
                 makeToast(R.string.msg_quit)
             }

@@ -50,7 +50,6 @@
                     srcCompat="@{book.thumbnail}"
                     android:layout_width="100dp"
                     android:layout_height="0dp"
-                    android:transitionName="@{TransitionName.BOOKS_ITEM_IMAGE+position}"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +66,6 @@
                     android:maxLines="1"
                     android:text="@{book.title}"
                     android:textSize="13sp"
-                    android:transitionName="@{TransitionName.BOOKS_ITEM_TITLE+position}"
                     app:fontFamily="@font/notosans_bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/image_book"
@@ -113,16 +111,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:tint="@color/colorOrange"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/text_title"
-                    app:srcCompat="@drawable/ic_baseline_create_12" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/text_authors"

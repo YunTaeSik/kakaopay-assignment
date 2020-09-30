@@ -87,7 +87,6 @@
                     android:layout_marginStart="16dp"
                     android:text="@{bookDetailViewModel.book.title}"
                     android:textSize="18sp"
-                    android:transitionName="@{TransitionName.BOOKS_ITEM_TITLE+position}"
                     app:fontFamily="@font/notosans_bold"
                     app:layout_constraintBottom_toBottomOf="@+id/card_image_book"
                     app:layout_constraintEnd_toEndOf="@id/guide_content_end"

@@ -1,16 +1,13 @@
 package com.yts.ytscleanarchitecture.presentation.ui.books
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.yts.domain.entity.Book
 import com.yts.ytscleanarchitecture.BR
 import com.yts.ytscleanarchitecture.R
@@ -19,13 +16,11 @@ import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
 import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewModel
 import kotlinx.android.synthetic.main.fragment_books.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.parameter.parametersOf
-import java.lang.Exception
 
 class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListener {
     private val booksViewModel: BooksViewModel by sharedViewModel()
@@ -49,7 +44,7 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
 
     private fun setBookAdapter() {
         list_book.layoutManager = LinearLayoutManager(context)
-
+        list_book.itemAnimator = null
         list_book.adapter = booksAdapter.withLoadStateFooter(
             footer = BooksPageLoadStateAdapter(booksAdapter)
         )

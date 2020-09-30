@@ -11,7 +11,6 @@ import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewMod
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksAdapter
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksViewModel
 import com.yts.ytscleanarchitecture.presentation.ui.books.OnBooksAdapterListener
-import com.yts.ytscleanarchitecture.presentation.ui.search.SearchViewModel
 import com.yts.ytscleanarchitecture.utils.Const
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -32,12 +31,11 @@ val repositoryModule = module {
     single<SearchRepository> { SearchRepositoryImp(get()) }
 
     single<GetBooksUseCase> { GetBooksUseCase(get()) }
-    single<GetKeywordsUseCase> { GetKeywordsUseCase(get()) }
     single<GetTokenUseCase> { GetTokenUseCase(Const.REST_API_KEY) }
 }
 
 var adapterModule = module {
-    factory { (listener: OnBooksAdapterListener) ->BooksAdapter(  listener) }
+    factory { (listener: OnBooksAdapterListener) -> BooksAdapter(listener) }
 
 }
 
@@ -70,9 +68,6 @@ var netModule = module {
 var viewModelModule = module {
     viewModel {
         BooksViewModel(get(), get())
-    }
-    viewModel {
-        SearchViewModel(get(), get())
     }
     viewModel {
         BookDetailViewModel()

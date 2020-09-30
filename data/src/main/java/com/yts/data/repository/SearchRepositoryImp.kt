@@ -41,17 +41,4 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
         }.observable.cachedIn(viewModelScope)
 
     }
-
-    override fun getKeywords(
-        token: String,
-        query: String,
-        sort: String?,
-        page: Int?,
-        size: Int?,
-        target: String?
-    ): Observable<List<Book>> {
-        return searchService.getKeywords(token, query, sort, page, size, target).flatMap {
-            Observable.just(it.documents)
-        }
-    }
 }

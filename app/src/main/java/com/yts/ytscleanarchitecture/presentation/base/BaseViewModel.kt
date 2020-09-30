@@ -25,6 +25,10 @@ abstract class BaseViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> get() = _isLoading
     val toastMessageId: LiveData<Int> get() = _toastMessageId
 
+    fun initToastMessage() {
+        _toastMessageId.value = 0
+    }
+
     fun <T> addDisposable(
         observable: Observable<T>,
         onSuccess: ((t: T) -> Unit),
@@ -61,9 +65,6 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    fun initToastMessage() {
-        _toastMessageId.value = 0
-    }
 
     override fun onCleared() {
         clear()

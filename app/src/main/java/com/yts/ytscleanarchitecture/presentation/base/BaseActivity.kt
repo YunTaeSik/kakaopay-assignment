@@ -8,18 +8,13 @@ import androidx.lifecycle.ViewModel
 import com.yts.ytscleanarchitecture.BR
 import com.yts.ytscleanarchitecture.extension.hideKeyboard
 
-// binding 을 외부에서 설정함
-// extends = out 서브
-// super = in  슈퍼
 abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
     private var mLastClickTime: Long = 0
+    lateinit var binding: B
 
     abstract fun onLayoutId(): Int
     abstract fun observer()
 
-    lateinit var binding: B
-
-    private val tag = javaClass.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +28,5 @@ abstract class BaseActivity<B : ViewDataBinding> : AppCompatActivity() {
 
     protected fun addBindingVariable(variableId: Int, value: Any) {
         binding.setVariable(variableId, value)
-    }
-
-    fun clickTimeCheck(): Boolean {
-        if (System.currentTimeMillis() - mLastClickTime < 700) {
-            return true
-        }
-        mLastClickTime = System.currentTimeMillis()
-        return false
-    }
-
-    override fun onBackPressed() {
-        this.hideKeyboard()
-        super.onBackPressed()
     }
 }
