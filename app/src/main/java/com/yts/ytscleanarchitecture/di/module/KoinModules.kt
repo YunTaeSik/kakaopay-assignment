@@ -5,7 +5,6 @@ import com.yts.data.repository.SearchRepositoryImp
 import com.yts.data.source.remote.SearchService
 import com.yts.domain.repository.SearchRepository
 import com.yts.domain.usecase.search.GetBooksUseCase
-import com.yts.domain.usecase.search.GetKeywordsUseCase
 import com.yts.domain.usecase.search.GetTokenUseCase
 import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewModel
 import com.yts.ytscleanarchitecture.presentation.ui.books.BooksAdapter

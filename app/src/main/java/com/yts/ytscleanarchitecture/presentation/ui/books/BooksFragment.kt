@@ -2,12 +2,12 @@ package com.yts.ytscleanarchitecture.presentation.ui.books
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yts.domain.entity.Book
 import com.yts.ytscleanarchitecture.BR
 import com.yts.ytscleanarchitecture.R
@@ -39,10 +39,12 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
         super.onActivityCreated(savedInstanceState)
         addBindingVariable(BR.booksViewModel, booksViewModel)
         setOnDeleteBtnClick()
-        setBookAdapter()
+        setBookList()
     }
 
-    private fun setBookAdapter() {
+    private fun setBookList() {
+        booksAdapter.stateRestorationPolicy =
+            RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         list_book.layoutManager = LinearLayoutManager(context)
         list_book.itemAnimator = null
         list_book.adapter = booksAdapter.withLoadStateFooter(
@@ -82,7 +84,7 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
         })
 
         booksViewModel.books.observe(viewLifecycleOwner, {
-            lifecycleScope.launchWhenCreated {
+            lifecycleScope.launch {
                 booksAdapter.submitData(it)
             }
         })

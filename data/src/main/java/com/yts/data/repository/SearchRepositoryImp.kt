@@ -34,7 +34,7 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
         return Pager(
             PagingConfig(
                 pageSize = size ?: 50,
-                prefetchDistance = size ?: 50
+                enablePlaceholders = true
             )
         ) {
             BooksPagingSource(searchService, token, query, sort, size, target)

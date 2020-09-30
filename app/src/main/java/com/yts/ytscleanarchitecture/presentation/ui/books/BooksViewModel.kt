@@ -28,14 +28,30 @@ class BooksViewModel(
 
     private var searchDelayDisposable: Disposable? = null
 
+    private var lastSearchQuery: String? = null
+
     fun initQuery() {
         query.value = ""
     }
 
+    private fun checkDuplicateQuery(query: String): Boolean {
+        return if (lastSearchQuery == query) {
+            true
+        } else {
+            lastSearchQuery = query
+            false
+        }
+    }
+
     @Suppress("UNCHECKED_CAST")
     fun getBooks(query: String) {
+        if (checkDuplicateQuery(query)) {
+            return
+        }
+
         searchDelayDisposable?.dispose()
         _isLoading.value = false
+        emptyBooks()
 
         if (query.isNotEmpty()) {
             searchDelayDisposable = addDisposable(Observable.concat(
@@ -54,18 +70,17 @@ class BooksViewModel(
                 commonError(it)
             })
         } else {
-            emptyBooks()
+            _booksType.value = BooksFragmentType.EMPTY
         }
     }
 
     private fun emptyBooks() {
         _books.value = PagingData.empty()
-        _booksType.value = BooksFragmentType.EMPTY
     }
 
     fun loadError(throwable: Throwable) {
         if (throwable is PageDataEmptyException) {
-            _books.value = PagingData.empty()
+            emptyBooks()
             _toastMessageId.postValue(R.string.error_query_size_null_message)
         } else {
             commonError(throwable)
