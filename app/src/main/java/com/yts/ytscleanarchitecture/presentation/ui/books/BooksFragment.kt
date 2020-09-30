@@ -67,9 +67,13 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
         booksViewModel.isLoading.observe(viewLifecycleOwner, {
             loading?.visible(it)
         })
-        booksViewModel.toastMessageId.observe(viewLifecycleOwner, { toastMessageId ->
-            context?.let { context ->
-                Toast.makeText(context, toastMessageId, Toast.LENGTH_SHORT).show()
+
+        booksViewModel.toastMessageId.observe(this, { toastMessageId ->
+            if (toastMessageId != 0) {
+                context?.let { context ->
+                    Toast.makeText(context, toastMessageId, Toast.LENGTH_SHORT).show()
+                    booksViewModel.initToastMessage()
+                }
             }
         })
 

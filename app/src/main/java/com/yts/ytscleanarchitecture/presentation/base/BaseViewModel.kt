@@ -61,6 +61,10 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
+    fun initToastMessage() {
+        _toastMessageId.value = 0
+    }
+
     override fun onCleared() {
         clear()
         super.onCleared()
