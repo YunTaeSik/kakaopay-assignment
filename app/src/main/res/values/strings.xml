@@ -2,11 +2,17 @@
     <string name="app_name">yts-clean-architecture</string>
 
     <string name="search" translatable="false">"Search"</string>
+    <string name="author">"Author"</string>
+    <string name="price">"Price"</string>
+    <string name="publisher">"Publisher"</string>
+    <string name="translators">"Translators"</string>
 
     <string name="intro_sub_text" translatable="false">"안녕하세요\n<b>윤태식</b>입니다"</string>
 
 
     <string name="msg_quit">"뒤로" 버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="book_price">"₩ %s"</string>
+    <string name="see_more">"자세히 보기"</string>
 
     <string name="search_hint">"이미지를 검색해보세요"</string>
 

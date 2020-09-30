@@ -44,20 +44,8 @@ abstract class BaseFragment<B : ViewDataBinding> : Fragment() {
     }
 
     protected fun setSharedElementTransition() {
-        sharedElementEnterTransition =
-            TransitionSet().addTransition(ChangeBounds()).addTransition(ChangeTransform())
-                .addTransition(ChangeImageTransform()).addTransition(MaterialContainerTransform())
-        sharedElementReturnTransition =
-            TransitionSet().addTransition(ChangeBounds()).addTransition(ChangeTransform())
-                .addTransition(ChangeImageTransform()).addTransition(MaterialContainerTransform())
-        /*  sharedElementEnterTransition = MaterialContainerTransform().apply {
-              duration = AnimationDuration.MEDIUM_EXPANDING
-              scrimColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-          }
-          sharedElementReturnTransition = MaterialContainerTransform().apply {
-              duration = AnimationDuration.MEDIUM_COLLAPSING
-              scrimColor = ContextCompat.getColor(requireContext(), android.R.color.transparent)
-          }*/
+        sharedElementEnterTransition = MaterialContainerTransform()
+        sharedElementReturnTransition = MaterialContainerTransform()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

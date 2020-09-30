@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yts.domain.entity.Book
 import com.yts.ytscleanarchitecture.R
 import com.yts.ytscleanarchitecture.databinding.ItemBookBinding
+import com.yts.ytscleanarchitecture.extension.priceDived
 import com.yts.ytscleanarchitecture.utils.CommonDiffUtil
 import com.yts.ytscleanarchitecture.utils.TransitionName
 
@@ -50,18 +51,13 @@ class BooksAdapter(val booksAdapterListener: OnBooksAdapterListener) :
                 binding.book = book
                 binding.position = bindingAdapterPosition
 
-                binding.textPrice.apply {
-                    book.price?.let { price ->
-                        text = "₩" + (price.toFloat() / 1000.0f)
-                    }
-
-                }
+                binding.textPrice.priceDived(book.price)
                 binding.textAuthors.apply {
                     text = book.authors?.toList().toString()
                 }
 
                 binding.root.setOnClickListener {
-                    booksAdapterListener?.gotoDetailBook(
+                    booksAdapterListener.gotoDetailBook(
                         data, bindingAdapterPosition,
                         FragmentNavigatorExtras(
                             binding.layoutRoot to TransitionName.BOOKS_ITEM_LAYOUT + bindingAdapterPosition

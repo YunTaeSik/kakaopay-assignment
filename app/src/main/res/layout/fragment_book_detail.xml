@@ -35,36 +35,205 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_book"
-            android:layout_width="100dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:elevation="2dp"
-            android:transitionName="@{TransitionName.BOOKS_ITEM_IMAGE+position}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back"
-            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
-            app:srcCompat="@{bookDetailViewModel.book.thumbnail}"
-            app:strokeColor="@color/background"
-            app:strokeWidth="4dp" />
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toTopOf="@+id/btn_detail"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_content_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="24dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_content_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="24dp" />
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_image_book"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="16dp"
+                    app:layout_constraintStart_toStartOf="@id/guide_content_start"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/image_book"
+                        android:layout_width="100dp"
+                        android:layout_height="130dp"
+                        android:outlineProvider="background"
+                        app:srcCompat="@{bookDetailViewModel.book.thumbnail}" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@{bookDetailViewModel.book.title}"
+                    android:textSize="18sp"
+                    android:transitionName="@{TransitionName.BOOKS_ITEM_TITLE+position}"
+                    app:fontFamily="@font/notosans_bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/card_image_book"
+                    app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+                    app:layout_constraintStart_toEndOf="@+id/card_image_book"
+                    app:layout_constraintTop_toTopOf="@+id/card_image_book"
+                    app:layout_constraintVertical_bias="0"
+                    tools:text="타이틀" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="@{bookDetailViewModel.book.contents}"
+                    android:textColor="@color/gray"
+                    app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+                    app:layout_constraintStart_toStartOf="@id/guide_content_start"
+                    app:layout_constraintTop_toBottomOf="@+id/card_image_book"
+                    tools:text="설명" />
+
+                <View
+                    android:id="@+id/view_line"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@color/grayBackground"
+                    app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+                    app:layout_constraintStart_toStartOf="@id/guide_content_start"
+                    app:layout_constraintTop_toBottomOf="@+id/text_content" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chip_authors"
+                    style="@style/ChipOrangeLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/author"
+                    app:layout_constraintStart_toStartOf="@id/text_authors"
+                    app:layout_constraintTop_toBottomOf="@+id/view_line" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_authors"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/notosans_bold"
+                    app:layout_constraintEnd_toStartOf="@+id/text_price"
+                    app:layout_constraintStart_toStartOf="@id/guide_content_start"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_authors"
+                    tools:text="저자" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chip_price"
+                    style="@style/ChipOrangeLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/price"
+                    app:layout_constraintStart_toStartOf="@+id/text_price"
+                    app:layout_constraintTop_toBottomOf="@+id/view_line" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/notosans_bold"
+                    app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+                    app:layout_constraintStart_toEndOf="@id/text_authors"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_authors"
+                    tools:text="가격" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chip_publisher"
+                    style="@style/ChipOrangeLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/publisher"
+                    app:layout_constraintStart_toStartOf="@id/text_publisher"
+                    app:layout_constraintTop_toBottomOf="@+id/text_authors" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_publisher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@{bookDetailViewModel.book.publisher}"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/notosans_bold"
+                    app:layout_constraintEnd_toStartOf="@+id/text_price"
+                    app:layout_constraintStart_toStartOf="@id/guide_content_start"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_publisher"
+                    tools:text="출판사" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chip_translators"
+                    style="@style/ChipOrangeLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/translators"
+                    app:layout_constraintStart_toStartOf="@+id/text_translators"
+                    app:layout_constraintTop_toBottomOf="@+id/text_price" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_translators"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/notosans_bold"
+                    app:layout_constraintEnd_toEndOf="@id/guide_content_end"
+                    app:layout_constraintStart_toEndOf="@id/text_publisher"
+                    app:layout_constraintTop_toBottomOf="@+id/chip_translators"
+                    tools:text="번역가" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_title"
+            android:id="@+id/btn_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="24dp"
-            android:text="@{bookDetailViewModel.book.title}"
-            android:textSize="18sp"
-            android:transitionName="@{TransitionName.BOOKS_ITEM_TITLE+position}"
-            app:fontFamily="@font/notosans_bold"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/shape_rectangle_orange_32"
+            android:fontFamily="@font/notosans_bold"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/see_more"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_book"
-            app:layout_constraintTop_toTopOf="@+id/image_book"
-            tools:text="타이틀" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scroll" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
