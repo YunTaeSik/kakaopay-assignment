@@ -209,14 +209,5 @@ Domain에선 PagingData을 전달 받을 수 없기때문에 Star-projections �
 그렇기때문에 ViewModel에서 주입받고나서 어떤 객체인지 정확히 알수 없다.  
 그래서 Viewmodel에서 전달받을때 명확하지 않은데 어떤식으로 구현하는게 옳고 좋은방법인가에 대한 의문이 남는다.
 
-
-
-
-
-  
-
-  
-
-
-
-
+# 동작
+![kakaopay_progress](https://user-images.githubusercontent.com/23161645/94793526-8e1cab80-0415-11eb-8c52-c146dbe9c1e7.gif)
