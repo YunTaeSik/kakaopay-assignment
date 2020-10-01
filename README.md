@@ -1,6 +1,6 @@
 # KaKao Pay Assignment
-Daum 책검색 API을 활용한 App  
-Clean Architecture와 MVVM패턴을 사용하여 구현
+Daum 책검색 API을 활용한 App을 구현했으며,  
+Clean Architecture와 MVVM패턴을 사용하여 구현했습니다.
 # SDK Version
 compileSdkVersion = 30  
 targetSdkVersion = 30  
@@ -198,6 +198,18 @@ class BooksViewModel(
 ```
 BooksViewModel에서 다음 Restful API를 호출하기위해 필요한 Token을 가져오기위해 GetTokenUseCase와 실제적으로 책검색 리스트를 가져오기 위한 GetBooksUseCase를 주입하였습니다.
 ViewModel에선 알맞은 Domain 레이어에 UseCase를 호출하면됩니다.
+
+# 결론
+위와 같은 구조로 변화의 대한 레이어가 명확해지므로 생산성과 유지보수를 증대 할 수 있다고 생각합니다.  
+저는 좋은 코드의 구조가 좋은 제품으로 이어진다고 생각하기 때문에 위와 같은 아키텍쳐를 적용하고 구현했습니다.  
+
+# PS
+Data 레이어에서 Paging Source를 구현하고 전달을 해야하는데,   
+Domain에선 PagingData을 전달 받을 수 없기때문에 Star-projections 로 처리하였는데,  
+그렇기때문에 ViewModel에서 주입받고나서 어떤 객체인지 정확히 알수 없다.  
+그래서 Viewmodel에서 전달받을때 명확하지 않은데 어떤식으로 구현하는게 옳고 좋은방법인가에 대한 의문이 남는다.
+
+
 
 
 
