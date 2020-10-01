@@ -44,7 +44,7 @@ Clean Architecture는 총 3가지의 Layer로 구분합니다.
  Domain 레이어는 Android 프레임워크에 의존하지 않는 순수한 Java 혹은 Kotlin 모듈입니다.
 Domain 레이어는 Entity, Repository(행동들을 담고있는), usecase(행동들의 최소 단위)를 담고있습니다.
 ### UseCase
-```
+```kotlin
 class GetBooksUseCase(private val searchRepository: SearchRepository) {
     private val page = 1
     private val size = 50
@@ -61,7 +61,7 @@ class GetBooksUseCase(private val searchRepository: SearchRepository) {
 UseCase는 전체적인 코드파악이 쉬워지며, 의존성이 낮아지기 때문에 유지보수에 용이하단 장점이 있습니다.  
 위 UseCase에서는 검색이란 행동에서 책검색이란 최소단위를 처리했습니다.  
 ### Repository
-```
+```kotlin
 interface SearchRepository {
     fun getBooks(
         viewModelScope: CoroutineScope,
@@ -78,7 +78,7 @@ interface SearchRepository {
 현재는 책검색만 있지만, 다른 검색(이미지, 동영상, 웹 블로그)등이 필요하다면 여기에 작성하면 됩니다.  
 여기서 Repository는 Data 레이어와 연결점이 됩니다.
 ### Entity
-```
+```kotlin
 data class Book(
     val title: String? = null,
     val contents: String? = null,
@@ -99,7 +99,8 @@ Entity는 프레임워크와 의존성을 가지면 안되고, 다른 프로젝�
 Data 레이어는 Domain 레어에서 설계한 Repository를 구현했으며,  
 Data를 가져오기위한 Restful API, LocalCache(Room,Sharedpreferences), PagingSource(페이징 처리)을 구현합니다.   
 여기서는 프레임워크에 의존성이 생기게 됩니다.  
-```
+### SearchRepositoryImp / SearchService
+```kotlin
 class SearchRepositoryImp(private val searchService: SearchService) : SearchRepository {
     override fun getBooks(
         viewModelScope: CoroutineScope,
@@ -122,7 +123,7 @@ class SearchRepositoryImp(private val searchService: SearchService) : SearchRepo
     }
 }
 ```
-```
+```kotlin
 interface SearchService {
     @GET("/v3/search/book")
     suspend fun getBooks(
@@ -138,6 +139,66 @@ interface SearchService {
 SearchRepository를 구현하는 클래스입니다.
 저는 Retrofit2를 사용했고 SearchRepositoryImp에서 SearchService를 주입하여 처리하도록 구현했습니다.
 ## Presentation 레이어
+UI레벨의 레이어 이므로 Android 프레임워크에 대한 의존성이 높습니다.  
+저는 MVVM패턴의 따라 View+ViewModel의 구조로 구현 했습니다.  
+View (Activity / Fragment)에선 UI와 관련된 부분을 처리하며 ViewModel에서 Domain 레이어의 알맞는 UseCase를 꺼내와 사용합니다.  
+### DI (Koin)
+```kotlin
+var appModule = module {
+    factory { (listener: OnBooksAdapterListener) -> BooksAdapter(listener) }
+
+    viewModel {
+        BooksViewModel(get(), get())
+    }
+    viewModel {
+        BookDetailViewModel()
+    }
+
+    single { Gson() }
+
+}
+val domainModule = module {
+    single<SearchRepository> { SearchRepositoryImp(get()) }
+    single<GetBooksUseCase> { GetBooksUseCase(get()) }
+    single<GetTokenUseCase> { GetTokenUseCase(Const.REST_API_KEY) }
+}
+
+var dataModule = module {
+    single<Retrofit> {
+        Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(Const.BASE_URL)
+            .client(get())
+            .build()
+    }
+
+    single<OkHttpClient> {
+        OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .build()
+    }
+
+    single<SearchService> {
+        get<Retrofit>().create(SearchService::class.java)
+    }
+}
+```
+의존성 주입 라이브러리로 Koin을 사용하여 구현 했습니다.
+
+### ViewModel
+> LifeCycle을 고려하여 UI를 관리한다. 화면회전과 같은 구성 변경이 일어나도 데이터를 보관하기 때문에 UI를 유지할수 있는 장점이 있습니다.
+```kotlin
+class BooksViewModel(
+    private val getTokenUseCase: GetTokenUseCase,
+    private val getBooksUseCase: GetBooksUseCase
+)
+```
+BooksViewModel에서 다음 Restful API를 호출하기위해 필요한 Token을 가져오기위해 GetTokenUseCase와 실제적으로 책검색 리스트를 가져오기 위한 GetBooksUseCase를 주입하였습니다.
+ViewModel에선 알맞은 Domain 레이어에 UseCase를 호출하면됩니다.
+
 
 
   
