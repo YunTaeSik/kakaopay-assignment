@@ -1,27 +1,26 @@
 <resources>
     <string name="app_name">yts-clean-architecture</string>
 
-    <string name="title" translatable="false">"Architecture"</string>
     <string name="search" translatable="false">"Search"</string>
-
-    <string name="intro_text" translatable="false">"YTS<b>clean</b>\nArchitecture"</string>
-    <string name="intro_sub_text" translatable="false">"안녕하세요\n<b>윤태식</b>입니다"</string>
+    <string name="author">"Author"</string>
+    <string name="price">"Price"</string>
+    <string name="publisher">"Publisher"</string>
+    <string name="translators">"Translators"</string>
 
 
     <string name="msg_quit">"뒤로" 버튼을 한번 더 누르시면 종료됩니다.</string>
+    <string name="book_price">"₩ %s"</string>
+    <string name="see_more">"자세히 보기"</string>
 
-    <string name="cancel">"취소"</string>
     <string name="search_hint">"이미지를 검색해보세요"</string>
 
-    <string name="error_message">"에러가 발생했습니다. 네트워크를 확인해주세요."</string>
-    <string name="error_query_text_null_message">"ERROR = QUERY NULL"</string>
     <string name="error_query_size_null_message">"검색결과가 없습니다."</string>
 
-    <string name="ment1" translatable="false">"<b>‘동기부여가 잘 된’</b>"</string>
-    <string name="ment2" translatable="false">"<b>‘일이 자기 삶에 큰 의미가 있는’</b>"</string>
-    <string name="ment3" translatable="false">"<b>‘일에 최선을 다하는’</b>"</string>
-    <string name="ment4" translatable="false">"<b>‘함께 일하는 동료를 존중하는’</b>"</string>
-    <string name="ment5" translatable="false">"<b>‘윤태식’</b>이 되도록 하겠습니다"</string>
+    <string name="text_empty_introduce">"<b>‘내가 먼저 실행하는’</b>\n<b>‘꾸준히 학습하는’</b>\n<b>‘과감히 선택하고 실행하는’</b>\n<b>‘다양한 사고를 가지는’</b>"\n<b>‘윤태식’</b>이 되도록 하겠습니다</string>
+
+    <string name="error_default">"오류가 발생했습니다. 잠시 후 시도해주세요."</string>
+    <string name="error_socket_timeout">"네트워크 연결 시간이 초과됐습니다. 네트워크 연결을 확인해주세요."</string>
+    <string name="error_https">"네트워크 연결 오류가 발생했습니다. 네트워크 연결을 확인해주세요."</string>
 
 
 </resources>

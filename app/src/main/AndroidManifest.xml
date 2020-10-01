@@ -11,10 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.FullScreen"
-        android:usesCleartextTraffic="true">  <!--모든 http 주소에 접근가능하도록 -->
+        android:theme="@style/AppTheme.FullScreen">  <!--모든 http 주소에 접근가능하도록 -->
 
-        <activity android:name=".presentation.ui.intro.IntroActivity">
+        <activity
+            android:name=".presentation.ui.intro.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -22,12 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".presentation.ui.search.SearchActivity" />
-
-        <activity
-            android:name=".presentation.ui.image.ImageDetailActivity"
-            android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".presentation.ui.MainActivity" />
     </application>
 
 </manifest>

@@ -1,6 +1,9 @@
 package com.yts.ytscleanarchitecture.presentation.bindingAdapter
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.yts.ytscleanarchitecture.R
@@ -11,13 +14,13 @@ object ImageBindingAdapter {
     @BindingAdapter("srcCompat")
     fun srcCompat(view: ImageView, url: String?) {
         if (url != null) {
-            // val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
-
             Glide.with(view.context)
                 .load(url)
-                .error(R.drawable.img_error)
-                .thumbnail(0.3f)
-                // .transition(withCrossFade(factory))
+                .centerCrop()
+                .thumbnail(0.1f)
+                .error(
+                    ColorDrawable(ContextCompat.getColor(view.context, R.color.grayLight))
+                )
                 .into(view)
 
         }
