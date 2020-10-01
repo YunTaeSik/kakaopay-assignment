@@ -32,7 +32,6 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHoldExitTransition()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

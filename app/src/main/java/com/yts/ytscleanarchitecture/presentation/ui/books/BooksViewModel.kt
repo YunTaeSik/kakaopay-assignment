@@ -26,6 +26,7 @@ class BooksViewModel(
     val books: LiveData<PagingData<Book>> get() = _books
     val booksType: LiveData<BooksFragmentType> get() = _booksType
 
+    private var searchDelayTime = 1000L
     private var searchDelayDisposable: Disposable? = null
 
     private var lastSearchQuery: String? = null
@@ -55,7 +56,7 @@ class BooksViewModel(
 
         if (query.isNotEmpty()) {
             searchDelayDisposable = addDisposable(Observable.concat(
-                Observable.timer(1500, TimeUnit.MILLISECONDS),
+                Observable.timer(searchDelayTime, TimeUnit.MILLISECONDS),
                 getBooksUseCase.invoke(
                     viewModelScope = viewModelScope,
                     token = getTokenUseCase.invoke(),
