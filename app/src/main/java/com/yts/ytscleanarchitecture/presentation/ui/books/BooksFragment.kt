@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.*
 import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.yts.ytscleanarchitecture.databinding.FragmentBooksBinding
 import com.yts.ytscleanarchitecture.extension.visible
 import com.yts.ytscleanarchitecture.presentation.base.BaseFragment
 import com.yts.ytscleanarchitecture.presentation.ui.bookdetail.BookDetailViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_books.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -96,12 +98,10 @@ class BooksFragment : BaseFragment<FragmentBooksBinding>(), OnBooksAdapterListen
     }
 
     override fun gotoDetailBook(book: Book, position: Int, extras: FragmentNavigator.Extras) {
-        activity?.let {
-            bookDetailViewModel.setBookAndPosition(book, position)
-            Navigation.findNavController(it, R.id.fragment_main).navigate(
-                R.id.action_booksFragment_to_bookDetailFragment, null, null, extras
-            )
-        }
+        bookDetailViewModel.setBookAndPosition(book, position)
+        findNavController().navigate(
+            R.id.action_booksFragment_to_bookDetailFragment, null, null, extras
+        )
 
     }
 
