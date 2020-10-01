@@ -7,8 +7,6 @@
     <string name="publisher">"Publisher"</string>
     <string name="translators">"Translators"</string>
 
-    <string name="intro_sub_text" translatable="false">"안녕하세요\n<b>윤태식</b>입니다"</string>
-
 
     <string name="msg_quit">"뒤로" 버튼을 한번 더 누르시면 종료됩니다.</string>
     <string name="book_price">"₩ %s"</string>
