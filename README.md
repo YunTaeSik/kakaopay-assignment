@@ -1,4 +1,4 @@
-# KaKao Pay Assignment
+# -
 Daum 책검색 API을 활용한 App을 구현했으며,  
 Clean Architecture와 MVVM패턴을 사용하여 구현했습니다.
 # SDK Version
